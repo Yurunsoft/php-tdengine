@@ -1,0 +1,7 @@
+ARG_ENABLE('tdengine', 'tdengine support', 'no');
+
+if (PHP_TDENGINE != 'no') {
+	AC_DEFINE('HAVE_TDENGINE', 1, 'tdengine support enabled');
+
+	EXTENSION('tdengine', 'tdengine.c', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
+}
