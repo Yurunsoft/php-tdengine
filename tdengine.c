@@ -6,8 +6,10 @@
 
 #include "php.h"
 #include "ext/standard/info.h"
+#include "Zend/zend_exceptions.h"
 #include "php_tdengine.h"
-#include "tdengine_arginfo.h"
+#include "ext_taos.h"
+#include <taos.h>
 
 /* For compatibility with older PHP versions */
 #ifndef ZEND_PARSE_PARAMETERS_NONE
@@ -16,32 +18,23 @@
 	ZEND_PARSE_PARAMETERS_END()
 #endif
 
-/* {{{ void test1() */
-PHP_FUNCTION(test1)
+/* {{{ PHP_MINIT_FUNCTION */
+PHP_MINIT_FUNCTION(tdengine)
 {
-	ZEND_PARSE_PARAMETERS_NONE();
-
-	php_printf("The extension %s is loaded and working!\r\n", "tdengine");
+	register_class_TDengine_Connection();
+	register_class_TDengine_Exception(zend_ce_exception);
+	taos_init();
+	return SUCCESS;
 }
 /* }}} */
 
-/* {{{ string test2( [ string $var ] ) */
-PHP_FUNCTION(test2)
+/* {{{ PHP_MSHUTDOWN_FUNCTION */
+PHP_MSHUTDOWN_FUNCTION(tdengine)
 {
-	char *var = "World";
-	size_t var_len = sizeof("World") - 1;
-	zend_string *retval;
-
-	ZEND_PARSE_PARAMETERS_START(0, 1)
-		Z_PARAM_OPTIONAL
-		Z_PARAM_STRING(var, var_len)
-	ZEND_PARSE_PARAMETERS_END();
-
-	retval = strpprintf(0, "Hello %s", var);
-
-	RETURN_STR(retval);
+	taos_cleanup();
+	return SUCCESS;
 }
-/* }}}*/
+/* }}} */
 
 /* {{{ PHP_RINIT_FUNCTION */
 PHP_RINIT_FUNCTION(tdengine)
@@ -49,7 +42,14 @@ PHP_RINIT_FUNCTION(tdengine)
 #if defined(ZTS) && defined(COMPILE_DL_TDENGINE)
 	ZEND_TSRMLS_CACHE_UPDATE();
 #endif
+	return SUCCESS;
+}
+/* }}} */
 
+/* {{{ PHP_RSHUTDOWN_FUNCTION */
+PHP_RSHUTDOWN_FUNCTION(tdengine)
+{
+	taos_cleanup();
 	return SUCCESS;
 }
 /* }}} */
@@ -68,10 +68,10 @@ zend_module_entry tdengine_module_entry = {
 	STANDARD_MODULE_HEADER,
 	"tdengine",					/* Extension name */
 	ext_functions,					/* zend_function_entry */
-	NULL,							/* PHP_MINIT - Module initialization */
-	NULL,							/* PHP_MSHUTDOWN - Module shutdown */
+	PHP_MINIT(tdengine),			/* PHP_MINIT - Module initialization */
+	PHP_MSHUTDOWN(tdengine),		/* PHP_MSHUTDOWN - Module shutdown */
 	PHP_RINIT(tdengine),			/* PHP_RINIT - Request initialization */
-	NULL,							/* PHP_RSHUTDOWN - Request shutdown */
+	PHP_RSHUTDOWN(tdengine),		/* PHP_RSHUTDOWN - Request shutdown */
 	PHP_MINFO(tdengine),			/* PHP_MINFO - Module info */
 	PHP_TDENGINE_VERSION,		/* Version */
 	STANDARD_MODULE_PROPERTIES

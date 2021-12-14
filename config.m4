@@ -90,5 +90,21 @@ if test "$PHP_TDENGINE" != "no"; then
   dnl In case of no dependencies
   AC_DEFINE(HAVE_TDENGINE, 1, [ Have tdengine support ])
 
-  PHP_NEW_EXTENSION(tdengine, tdengine.c, $ext_shared)
+  TDENGINE_INCLUDE="/usr/local/taos/include"
+  TDENGINE_LIBDIR="/usr/local/taos/driver"
+
+  PHP_CHECK_LIBRARY(taos, taos_init,
+  [
+  ], [
+    AC_MSG_ERROR(tdengine module requires libtaos >= 2.0.0)
+  ], [
+    -L$TDENGINE_LIBDIR
+  ])
+
+  PHP_ADD_LIBRARY_WITH_PATH(taos, $TDENGINE_LIBDIR, TDENGINE_SHARED_LIBADD)
+  PHP_SUBST(TDENGINE_SHARED_LIBADD)
+
+  PHP_ADD_INCLUDE($TDENGINE_INCLUDE)
+
+  PHP_NEW_EXTENSION(tdengine, tdengine.c src/ext_taos.c, $ext_shared)
 fi
