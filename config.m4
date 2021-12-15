@@ -106,5 +106,5 @@ if test "$PHP_TDENGINE" != "no"; then
 
   PHP_ADD_INCLUDE($TDENGINE_INCLUDE)
 
-  PHP_NEW_EXTENSION(tdengine, tdengine.c src/ext_taos.c, $ext_shared)
+  PHP_NEW_EXTENSION(tdengine, tdengine.c src/ext_taos.c src/ext_taos_connection.c src/ext_taos_resource.c, $ext_shared)
 fi

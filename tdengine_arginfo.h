@@ -1,7 +1,8 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 3099c0dcd9b9358e814e53877aa7dac683282979 */
+ * Stub hash: 2d38d78180d042c6e4916a96741cf780dadf319c */
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_TDengine_setOptions, 0, 0, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_TDengine_setOptions, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_TDengine_getClientInfo, 0, 0, IS_STRING, 0)
@@ -15,9 +16,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_TDengine_Connection___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, db, IS_STRING, 1, "null")
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_TDengine_Connection_connect arginfo_TDengine_setOptions
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_TDengine_Connection_connect, 0, 0, IS_VOID, 0)
+ZEND_END_ARG_INFO()
 
-#define arginfo_class_TDengine_Connection_close arginfo_TDengine_setOptions
+#define arginfo_class_TDengine_Connection_close arginfo_class_TDengine_Connection_connect
 
 #define arginfo_class_TDengine_Connection_getHost arginfo_TDengine_getClientInfo
 
@@ -55,10 +57,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_TDengine_Resource_getFieldCount arginfo_class_TDengine_Connection_getPort
 
-#define arginfo_class_TDengine_Resource_fetchLength arginfo_class_TDengine_Resource_fetch
-
 #define arginfo_class_TDengine_Resource_affectedRows arginfo_class_TDengine_Connection_getPort
 
 #define arginfo_class_TDengine_Resource_fetchFields arginfo_class_TDengine_Resource_fetch
 
-#define arginfo_class_TDengine_Resource_close arginfo_TDengine_setOptions
+#define arginfo_class_TDengine_Resource_close arginfo_class_TDengine_Connection_connect

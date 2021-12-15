@@ -41,8 +41,6 @@ namespace TDengine
 
         public function getFieldCount(): int {}
 
-        public function fetchLength(): array {}
-
         public function affectedRows(): int {}
 
         public function fetchFields(): array {}
@@ -51,7 +49,7 @@ namespace TDengine
 
     }
 
-    function setOptions(): void
+    function setOptions(array $options): bool
     {
 
     }

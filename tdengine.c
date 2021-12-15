@@ -9,6 +9,8 @@
 #include "Zend/zend_exceptions.h"
 #include "php_tdengine.h"
 #include "ext_taos.h"
+#include "ext_taos_connection.h"
+#include "ext_taos_resource.h"
 #include <taos.h>
 
 /* For compatibility with older PHP versions */
@@ -21,7 +23,9 @@
 /* {{{ PHP_MINIT_FUNCTION */
 PHP_MINIT_FUNCTION(tdengine)
 {
+	register_constants(module_number);
 	register_class_TDengine_Connection();
+	register_class_TDengine_Resource();
 	register_class_TDengine_Exception(zend_ce_exception);
 	taos_init();
 	return SUCCESS;
@@ -46,14 +50,6 @@ PHP_RINIT_FUNCTION(tdengine)
 }
 /* }}} */
 
-/* {{{ PHP_RSHUTDOWN_FUNCTION */
-PHP_RSHUTDOWN_FUNCTION(tdengine)
-{
-	taos_cleanup();
-	return SUCCESS;
-}
-/* }}} */
-
 /* {{{ PHP_MINFO_FUNCTION */
 PHP_MINFO_FUNCTION(tdengine)
 {
@@ -71,7 +67,7 @@ zend_module_entry tdengine_module_entry = {
 	PHP_MINIT(tdengine),			/* PHP_MINIT - Module initialization */
 	PHP_MSHUTDOWN(tdengine),		/* PHP_MSHUTDOWN - Module shutdown */
 	PHP_RINIT(tdengine),			/* PHP_RINIT - Request initialization */
-	PHP_RSHUTDOWN(tdengine),		/* PHP_RSHUTDOWN - Request shutdown */
+	NULL,							/* PHP_RSHUTDOWN - Request shutdown */
 	PHP_MINFO(tdengine),			/* PHP_MINFO - Module info */
 	PHP_TDENGINE_VERSION,		/* Version */
 	STANDARD_MODULE_PROPERTIES
