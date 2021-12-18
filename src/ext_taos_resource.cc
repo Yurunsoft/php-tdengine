@@ -1,41 +1,26 @@
 #include "ext_tdengine.h"
 #include "ext_taos_resource.h"
-#include "Zend/zend_exceptions.h"
 
-inline int assert_res(TDengineResource *resource)
-{
-    return resource->res ? 1 : 0;
-}
+zend_class_entry *TDengine_Resource_ce;
+zend_object_handlers tdengine_resource_handlers;
 
-void close_resource(TDengineResource *resource)
+int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count)
 {
-    taos_stop_query(resource->res);
-    taos_free_result(resource->res);
-    resource->res = NULL;
-}
-
-inline void fetch(zval *zv, TDengineResource *resource)
-{
-    array_init(zv);
-    int field_count = taos_num_fields(resource->res);
-    TAOS_FIELD *fields = taos_fetch_fields(resource->res);
-    while (true)
+    TAOS_ROW row = nullptr;
+#ifdef HAVE_SWOOLE
+    if (Coroutine::get_current())
     {
-        zval zrow;
-        if (fetch_row(&zrow, resource, fields, field_count))
-        {
-            add_next_index_zval(zv, &zrow);
-        }
-        else
-        {
-            break;
-        }
+        swoole::coroutine::async([&]() {
+            row = taos_fetch_row(resource->res);
+        });
     }
-}
-
-inline int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count)
-{
-    TAOS_ROW row = taos_fetch_row(resource->res);
+    else
+    {
+#endif
+        row = taos_fetch_row(resource->res);
+#ifdef HAVE_SWOOLE
+    }
+#endif
     if (!row)
     {
         return 0;
@@ -74,10 +59,10 @@ inline int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields,
                 break;
             case TSDB_DATA_TYPE_BINARY:
             case TSDB_DATA_TYPE_NCHAR:
-                len = *((int16_t *)row[i]);
-                string_value = emalloc(len);
+                len = ((int16_t *)((char*)row[i] - sizeof(int16_t)))[0];
+                string_value = (char *) emalloc(len);
                 memcpy(string_value, row[i], len);
-                add_assoc_string(zrow, fields[i].name, string_value);
+                add_assoc_stringl(zrow, fields[i].name, string_value, len);
                 efree(string_value);
                 break;
             case TSDB_DATA_TYPE_TIMESTAMP:
@@ -104,7 +89,26 @@ inline int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields,
     return 1;
 }
 
-inline void fetch_fields(zval *zresult, TDengineResource *resource)
+void fetch(zval *zv, TDengineResource *resource)
+{
+    array_init(zv);
+    int field_count = taos_num_fields(resource->res);
+    TAOS_FIELD *fields = taos_fetch_fields(resource->res);
+    while (true)
+    {
+        zval zrow;
+        if (fetch_row(&zrow, resource, fields, field_count))
+        {
+            add_next_index_zval(zv, &zrow);
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+
+void fetch_fields(zval *zresult, TDengineResource *resource)
 {
     TAOS_FIELD *fields = taos_fetch_fields(resource->res);
     int field_count = taos_num_fields(resource->res);

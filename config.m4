@@ -18,6 +18,9 @@ PHP_ARG_ENABLE([tdengine],
     [Enable tdengine support])],
   [no])
 
+PHP_ARG_ENABLE(swoole, swoole support,
+[  --enable-swoole           Enable swoole support], [enable_swoole="yes"])
+
 if test "$PHP_TDENGINE" != "no"; then
   dnl Write more examples of tests here...
 
@@ -106,5 +109,16 @@ if test "$PHP_TDENGINE" != "no"; then
 
   PHP_ADD_INCLUDE($TDENGINE_INCLUDE)
 
-  PHP_NEW_EXTENSION(tdengine, tdengine.c src/ext_taos.c src/ext_taos_connection.c src/ext_taos_resource.c, $ext_shared)
+  if test "$PHP_SWOOLE" = "yes"; then
+    AC_DEFINE(HAVE_SWOOLE, 1, [use swoole])
+    PHP_ADD_INCLUDE([$phpincludedir/ext/swoole])
+    PHP_ADD_INCLUDE([$phpincludedir/ext/swoole/include])
+    PHP_ADD_EXTENSION_DEP(tdengine, swoole)
+  fi
+
+  PHP_NEW_EXTENSION(tdengine, tdengine.cc src/ext_taos.cc src/ext_taos_connection.cc src/ext_taos_resource.cc src/tdengine_swoole.cc, $ext_shared,,, cxx)
+
+  PHP_REQUIRE_CXX()
+  
+  CXXFLAGS="$CXXFLAGS -Wall -Wno-unused-function -Wno-deprecated -Wno-deprecated-declarations -std=c++11"
 fi

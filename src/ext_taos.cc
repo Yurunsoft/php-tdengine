@@ -8,11 +8,10 @@ PHP_FUNCTION(setOptions)
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a", &options) == FAILURE) {
 		RETURN_THROWS();
 	}
-	zend_ulong    hashIndex;
 	zval *hashData;
 	zend_string *hashKey;
 
-	ZEND_HASH_FOREACH_KEY_VAL(Z_ARRVAL_P(options), hashIndex, hashKey, hashData) {
+	ZEND_HASH_FOREACH_STR_KEY_VAL_IND(Z_ARRVAL_P(options), hashKey, hashData) {
         if (0 != taos_options((TSDB_OPTION)(zend_long)hashKey, Z_STRVAL_P(hashData)))
         {
             RETURN_FALSE;

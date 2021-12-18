@@ -1,7 +1,7 @@
 #!/bin/sh -e
 __DIR__=$(cd "$(dirname "$0")";pwd)
 
-COMPILE_PARAMS=""
+COMPILE_PARAMS="--enable-swoole"
 
 if [ "$(uname | grep -i darwin)"x != ""x ]; then
   CPU_COUNT="$(sysctl -n machdep.cpu.core_count)"

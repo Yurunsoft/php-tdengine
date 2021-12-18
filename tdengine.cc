@@ -67,7 +67,7 @@ zend_module_entry tdengine_module_entry = {
 	PHP_MINIT(tdengine),			/* PHP_MINIT - Module initialization */
 	PHP_MSHUTDOWN(tdengine),		/* PHP_MSHUTDOWN - Module shutdown */
 	PHP_RINIT(tdengine),			/* PHP_RINIT - Request initialization */
-	NULL,							/* PHP_RSHUTDOWN - Request shutdown */
+	nullptr,							/* PHP_RSHUTDOWN - Request shutdown */
 	PHP_MINFO(tdengine),			/* PHP_MINFO - Module info */
 	PHP_TDENGINE_VERSION,		/* Version */
 	STANDARD_MODULE_PROPERTIES
