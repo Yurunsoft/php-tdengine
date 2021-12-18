@@ -37,7 +37,7 @@ PHP_METHOD(TDengine_Connection, connect) {
             connection->connection = taos_connect(connection->host, connection->user, connection->pass, connection->db, connection->port);
             if (!connection->connection)
             {
-                error = taos_errno(connection->connection);
+                error = taos_errno(nullptr);
             }
         });
         if (TSDB_CODE_SUCCESS != error)
@@ -175,31 +175,25 @@ PHP_METHOD(TDengine_Connection, query) {
     check_connected(connection);
 
     TAOS_RES *res = nullptr;
+    int error;
 #ifdef HAVE_SWOOLE
     if (Coroutine::get_current())
     {
-        int error = TSDB_CODE_SUCCESS;
         swoole::coroutine::async([&]() {
             res = taos_query(connection->connection, sql);
-            if (!res)
-            {
-                error = taos_errno(connection->connection);
-            }
+            error = taos_errno(res);
         });
-        if (TSDB_CODE_SUCCESS != error)
-        {
-            throw_taos_exception_by_errno(error);
-        }
     }
     else
     {
 #endif
         res = taos_query(connection->connection, sql);
-        if (nullptr == res)
-        {
-            throw_taos_exception(connection);
-        }
+        error = taos_errno(res);
 #ifdef HAVE_SWOOLE
+    }
+    if (TSDB_CODE_SUCCESS != error)
+    {
+        throw_taos_exception_by_errno(error);
     }
 #endif
 
