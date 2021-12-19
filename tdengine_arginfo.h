@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 2d38d78180d042c6e4916a96741cf780dadf319c */
+ * Stub hash: 11283c46b344d74e541516e65cfe3b2331ecca60 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_TDengine_setOptions, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
@@ -43,7 +43,14 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_TDengine_Connection_query, 
 	ZEND_ARG_TYPE_INFO(0, sql, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_TDengine_Connection_prepare, 0, 1, TDengine\\Statement, 0)
+	ZEND_ARG_TYPE_INFO(0, sql, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_TDengine_Resource_getConnection, 0, 0, TDengine\\Connection, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_TDengine_Resource_getStatement, 0, 0, TDengine\\Statement, 1)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_TDengine_Resource_getSql arginfo_TDengine_getClientInfo
@@ -62,3 +69,17 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_TDengine_Resource_fetchFields arginfo_class_TDengine_Resource_fetch
 
 #define arginfo_class_TDengine_Resource_close arginfo_class_TDengine_Connection_connect
+
+#define arginfo_class_TDengine_Statement_getConnection arginfo_class_TDengine_Resource_getConnection
+
+#define arginfo_class_TDengine_Statement_getSql arginfo_TDengine_getClientInfo
+
+#define arginfo_class_TDengine_Statement_close arginfo_class_TDengine_Connection_connect
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_TDengine_Statement_bindParam, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, dataType, IS_LONG, 0)
+	ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_TDengine_Statement_execute, 0, 0, TDengine\\Resource, 0)
+ZEND_END_ARG_INFO()

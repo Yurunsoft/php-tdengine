@@ -9,8 +9,8 @@
         RETURN_THROWS(); \
     }
 
-#define throw_taos_exception(connection) \
-	zend_throw_exception_ex(TDengine_Exception_ce, taos_errno(connection->connection), "%s", taos_errstr(connection->connection)); \
+#define throw_taos_exception(_connection) \
+	zend_throw_exception_ex(TDengine_Exception_ce, taos_errno(_connection->connection), "%s", taos_errstr(_connection->connection)); \
 	RETURN_THROWS();
 
 #define throw_taos_exception_by_errno(errno) \
@@ -49,6 +49,7 @@ ZEND_METHOD(TDengine_Connection, getDb);
 ZEND_METHOD(TDengine_Connection, getServerInfo);
 ZEND_METHOD(TDengine_Connection, selectDb);
 ZEND_METHOD(TDengine_Connection, query);
+ZEND_METHOD(TDengine_Connection, prepare);
 
 typedef struct {
     TDengineConnection *ptr;
@@ -67,6 +68,7 @@ static const zend_function_entry class_TDengine_Connection_methods[] = {
 	ZEND_ME(TDengine_Connection, getServerInfo, arginfo_class_TDengine_Connection_getServerInfo, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Connection, selectDb, arginfo_class_TDengine_Connection_selectDb, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Connection, query, arginfo_class_TDengine_Connection_query, ZEND_ACC_PUBLIC)
+	ZEND_ME(TDengine_Connection, prepare, arginfo_class_TDengine_Connection_prepare, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

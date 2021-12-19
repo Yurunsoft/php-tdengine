@@ -2,6 +2,7 @@
 # define PHP_EXT_TAOS_RESOURCE_H
 #include "ext_tdengine.h"
 #include "ext_taos_connection.h"
+#include "ext_taos_statement.h"
 
 #define check_res(res) \
 	if (!assert_res(res)) \
@@ -13,6 +14,7 @@
 typedef struct {
 	TAOS_RES *res;
     ConnectionObject *connection;
+    StatementObject *statement;
 	char *sql;
 } TDengineResource;
 
@@ -39,6 +41,7 @@ void fetch_fields(zval *zresult, TDengineResource *resource);
 
 // TDengine\Resource
 ZEND_METHOD(TDengine_Resource, getConnection);
+ZEND_METHOD(TDengine_Resource, getStatement);
 ZEND_METHOD(TDengine_Resource, getSql);
 ZEND_METHOD(TDengine_Resource, getResultPrecision);
 ZEND_METHOD(TDengine_Resource, fetch);
@@ -50,6 +53,7 @@ ZEND_METHOD(TDengine_Resource, close);
 
 static const zend_function_entry class_TDengine_Resource_methods[] = {
 	ZEND_ME(TDengine_Resource, getConnection, arginfo_class_TDengine_Resource_getConnection, ZEND_ACC_PUBLIC)
+	ZEND_ME(TDengine_Resource, getStatement, arginfo_class_TDengine_Resource_getStatement, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Resource, getSql, arginfo_class_TDengine_Resource_getSql, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Resource, getResultPrecision, arginfo_class_TDengine_Resource_getResultPrecision, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Resource, fetch, arginfo_class_TDengine_Resource_fetch, ZEND_ACC_PUBLIC)
@@ -69,6 +73,7 @@ static inline zend_object *php_tdengine_resource_create_object(zend_class_entry 
 	obj->ptr = (TDengineResource*) emalloc(sizeof(TDengineResource));
 	obj->ptr->res = nullptr;
 	obj->ptr->connection = nullptr;
+	obj->ptr->statement = nullptr;
 	obj->ptr->sql = nullptr;
 	zend_object *zobj = &obj->std;
 	zend_object_std_init(zobj, ce);
@@ -91,6 +96,11 @@ static inline void php_tdengine_resource_free_object(zend_object *zobj) {
 		{
 			GC_DELREF(&resource->connection->std);
 			resource->connection = nullptr;
+		}
+		if (resource->statement)
+		{
+			GC_DELREF(&resource->statement->std);
+			resource->statement = nullptr;
 		}
 		obj->ptr->sql = nullptr;
 	}

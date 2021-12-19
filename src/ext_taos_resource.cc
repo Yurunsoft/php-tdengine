@@ -68,7 +68,6 @@ int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int fi
             case TSDB_DATA_TYPE_TIMESTAMP:
                 add_assoc_long(zrow, fields[i].name, *((uint64_t *)row[i]));
                 break;
-                break;
             case TSDB_DATA_TYPE_UTINYINT:
                 add_assoc_long(zrow, fields[i].name, *((uint8_t *)row[i]));
                 break;
@@ -129,6 +128,20 @@ PHP_METHOD(TDengine_Resource, getConnection) {
 
     GC_ADDREF(&resource->connection->std);
     RETURN_OBJ(&resource->connection->std);
+}
+
+PHP_METHOD(TDengine_Resource, getStatement) {
+    TDengineResource *resource = this_object(ResourceObject);
+
+    if (resource->statement)
+    {
+        GC_ADDREF(&resource->statement->std);
+        RETURN_OBJ(&resource->statement->std);
+    }
+    else
+    {
+        RETURN_NULL();
+    }
 }
 
 PHP_METHOD(TDengine_Resource, getSql) {

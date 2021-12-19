@@ -11,6 +11,7 @@
 #include "ext_taos.h"
 #include "ext_taos_connection.h"
 #include "ext_taos_resource.h"
+#include "ext_taos_statement.h"
 #include <taos.h>
 
 /* For compatibility with older PHP versions */
@@ -26,6 +27,7 @@ PHP_MINIT_FUNCTION(tdengine)
 	register_constants(module_number);
 	register_class_TDengine_Connection();
 	register_class_TDengine_Resource();
+	register_class_TDengine_Statement();
 	register_class_TDengine_Exception(zend_ce_exception);
 	taos_init();
 	return SUCCESS;

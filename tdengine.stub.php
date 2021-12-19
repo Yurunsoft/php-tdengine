@@ -25,11 +25,15 @@ namespace TDengine
         public function selectDb(string $db): void {}
 
         public function query(string $sql): Resource {}
+
+        public function prepare(string $sql): Statement {}
     }
 
     class Resource
     {
         public function getConnection(): Connection {}
+
+        public function getStatement(): ?Statement {}
 
         public function getSql(): string {}
 
@@ -47,6 +51,22 @@ namespace TDengine
 
         public function close(): void {}
 
+    }
+
+    class Statement
+    {
+        public function getConnection(): Connection {}
+
+        public function getSql(): string {}
+
+        public function close(): void {}
+
+        /**
+         * @param mixed $value
+         */
+        public function bindParam(int $dataType, $value): void {}
+
+        public function execute(): Resource;
     }
 
     function setOptions(array $options): bool

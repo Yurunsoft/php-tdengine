@@ -204,3 +204,41 @@ PHP_METHOD(TDengine_Connection, query) {
     resource->sql = sql;
     GC_ADDREF(Z_OBJ_P(ZEND_THIS));
 }
+
+PHP_METHOD(TDengine_Connection, prepare) {
+    char *sql;
+    size_t sql_len;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &sql, &sql_len) == FAILURE) {
+		RETURN_THROWS();
+	}
+    TDengineConnection *connection = this_object(ConnectionObject);
+    check_connected(connection);
+
+    TAOS_STMT *stmt = taos_stmt_init(connection->connection);
+    int error;
+#ifdef HAVE_SWOOLE
+    if (Coroutine::get_current())
+    {
+        swoole::coroutine::async([&]() {
+            error = taos_stmt_prepare(stmt, sql, sql_len);
+        });
+    }
+    else
+    {
+#endif
+        error = taos_stmt_prepare(stmt, sql, sql_len);
+#ifdef HAVE_SWOOLE
+    }
+    if (TSDB_CODE_SUCCESS != error)
+    {
+        taos_stmt_close(stmt);
+        throw_taos_exception_by_errno(error);
+    }
+#endif
+    object_init_ex(return_value, TDengine_Statement_ce);
+    TDengineStatement *statement = zend_object_to_object_ptr(Z_OBJ_P(return_value), StatementObject);
+    statement->stmt = stmt;
+    statement->connection = this_object_container(ConnectionObject);
+    statement->sql = sql;
+    GC_ADDREF(Z_OBJ_P(ZEND_THIS));
+}
