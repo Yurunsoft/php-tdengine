@@ -1,2 +1,2 @@
 #!/bin/bash
-php run-tests.php --show-diff -q
+php run-tests.php --show-diff -q $@

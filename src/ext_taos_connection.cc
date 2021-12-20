@@ -193,6 +193,10 @@ PHP_METHOD(TDengine_Connection, query) {
     }
     if (TSDB_CODE_SUCCESS != error)
     {
+        if (res)
+        {
+            taos_free_result(res);
+        }
         throw_taos_exception_by_errno(error);
     }
 #endif

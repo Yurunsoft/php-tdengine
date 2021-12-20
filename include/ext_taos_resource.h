@@ -35,7 +35,7 @@ inline void close_resource(TDengineResource *resource)
     resource->res = nullptr;
 }
 
-int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count);
+bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count);
 void fetch(zval *zv, TDengineResource *resource);
 void fetch_fields(zval *zresult, TDengineResource *resource);
 

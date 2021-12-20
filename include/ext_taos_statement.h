@@ -36,14 +36,14 @@ inline void close_statement(TDengineStatement *stmt)
 ZEND_METHOD(TDengine_Statement, getConnection);
 ZEND_METHOD(TDengine_Statement, getSql);
 ZEND_METHOD(TDengine_Statement, close);
-ZEND_METHOD(TDengine_Statement, bindParam);
+ZEND_METHOD(TDengine_Statement, bindParams);
 ZEND_METHOD(TDengine_Statement, execute);
 
 static const zend_function_entry class_TDengine_Statement_methods[] = {
 	ZEND_ME(TDengine_Statement, getConnection, arginfo_class_TDengine_Statement_getConnection, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Statement, getSql, arginfo_class_TDengine_Statement_getSql, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Statement, close, arginfo_class_TDengine_Statement_close, ZEND_ACC_PUBLIC)
-	ZEND_ME(TDengine_Statement, bindParam, arginfo_class_TDengine_Statement_bindParam, ZEND_ACC_PUBLIC)
+	ZEND_ME(TDengine_Statement, bindParams, arginfo_class_TDengine_Statement_bindParams, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Statement, execute, arginfo_class_TDengine_Statement_execute, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

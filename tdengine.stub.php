@@ -61,10 +61,7 @@ namespace TDengine
 
         public function close(): void {}
 
-        /**
-         * @param mixed $value
-         */
-        public function bindParam(int $dataType, $value): void {}
+        public function bindParams(array $params): void {}
 
         public function execute(): Resource;
     }

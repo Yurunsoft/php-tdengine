@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "php.h"
 #include "Zend/zend_exceptions.h"
+#include "ext/spl/spl_exceptions.h"
 BEGIN_EXTERN_C()
 #include "tdengine_arginfo.h"
 END_EXTERN_C()

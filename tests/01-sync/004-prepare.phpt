@@ -1,5 +1,5 @@
 --TEST--
-test query
+test prepare
 --EXTENSIONS--
 tdengine
 --FILE--
@@ -13,7 +13,7 @@ use function Test\getPass;
 use function Test\getPort;
 use function Test\getUser;
 
-include __DIR__ . '/include/include.php';
+include dirname(__DIR__) . '/include/include.php';
 define('DB_NAME', 'php_tdengine_test');
 $connection = Test\getConnection();
 $connection->connect();
@@ -28,9 +28,15 @@ $sql = 'create table if not exists test_query (ts timestamp, temperature int, hu
 $resource = $connection->query($sql);
 Assert::eq($resource->getSql(), $sql);
 
-$time = (int) (microtime(true) * 1000);
-$sql = sprintf('insert into test_query values(%s,%s,%s)', $time, 36, 44.0);
-$resource = $connection->query($sql);
+$time1 = (int) (microtime(true) * 1000);
+$sql = 'insert into test_query values(?,?,?)';
+$stmt = $connection->prepare($sql);
+$stmt->bindParams([
+    [TDengine\TSDB_DATA_TYPE_TIMESTAMP, $time1],
+    [TDengine\TSDB_DATA_TYPE_INT, 36],
+    [TDengine\TSDB_DATA_TYPE_FLOAT, 44.0],
+]);
+$resource = $stmt->execute();
 Assert::eq($resource->affectedRows(), 1);
 Assert::eq($resource->getSql(), $sql);
 
@@ -39,7 +45,7 @@ $resource = $connection->query($sql);
 Assert::eq($resource->getSql(), $sql);
 Assert::eq($resource->fetch(), [
     [
-        'ts'          => $time,
+        'ts'          => $time1,
         'temperature' => 36,
         'humidity'    => 44.0,
     ],
@@ -48,7 +54,7 @@ Assert::eq($resource->fetch(), [
 $resource = $connection->query($sql);
 Assert::eq($resource->getSql(), $sql);
 Assert::eq($resource->fetchRow(), [
-    'ts'          => $time,
+    'ts'          => $time1,
     'temperature' => 36,
     'humidity'    => 44.0,
 ]);

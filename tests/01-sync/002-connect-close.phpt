@@ -12,7 +12,7 @@ use function Test\getPass;
 use function Test\getPort;
 use function Test\getUser;
 
-include __DIR__ . '/include/include.php';
+include dirname(__DIR__) . '/include/include.php';
 $connection = Test\getConnection();
 assert(getHost() === $connection->getHost());
 assert(getPort() === $connection->getPort());

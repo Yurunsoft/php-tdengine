@@ -4,7 +4,7 @@
 zend_class_entry *TDengine_Resource_ce;
 zend_object_handlers tdengine_resource_handlers;
 
-int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count)
+bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count)
 {
     TAOS_ROW row = nullptr;
 #ifdef HAVE_SWOOLE
@@ -23,9 +23,9 @@ int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int fi
 #endif
     if (!row)
     {
-        return 0;
+        return false;
     }
-    int32_t len;
+    int16_t len;
     char *string_value;
     array_init_size(zrow, field_count);
 
@@ -66,7 +66,7 @@ int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int fi
                 efree(string_value);
                 break;
             case TSDB_DATA_TYPE_TIMESTAMP:
-                add_assoc_long(zrow, fields[i].name, *((uint64_t *)row[i]));
+                add_assoc_long(zrow, fields[i].name, *((int64_t *)row[i]));
                 break;
             case TSDB_DATA_TYPE_UTINYINT:
                 add_assoc_long(zrow, fields[i].name, *((uint8_t *)row[i]));
@@ -82,10 +82,11 @@ int fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int fi
                 break;
             default:
                 zend_throw_exception_ex(TDengine_Exception_ce, 0, "Invalid field type %d", fields[i].type);
+                return false;
         }
     }
 
-    return 1;
+    return true;
 }
 
 void fetch(zval *zv, TDengineResource *resource)
