@@ -1,6 +1,12 @@
 # php-tdengine
 
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yurunsoft/php-tdengine/ci/master)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
+[![imi License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://github.com/yurunsoft/php-tdengine/blob/master/LICENSE)
+
 大数据引擎 [TDengine](https://github.com/taosdata/TDengine) 的 PHP 客户端扩展。
+
+> 暂不支持 Windows
 
 ## 环境要求
 
