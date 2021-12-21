@@ -45,6 +45,10 @@ Co\run(function(){
     Assert::eq($resource->getSql(), $sql);
     
     $time2 = (int) (microtime(true) * 1000);
+    if ($time1 === $time2)
+    {
+        $time2 = $time1 + 1;
+    }
     $sql = 'insert into test_query values(?,?,?)';
     $stmt = $connection->prepare($sql);
     $stmt->bindParams([

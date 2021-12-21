@@ -8,6 +8,16 @@
 #include "php.h"
 #include "Zend/zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"
+
+// PHP < 8.0
+#ifndef RETURN_THROWS
+#define RETURN_THROWS() RETURN_FALSE
+#endif
+
+#ifndef ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE
+#define ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(pass_by_ref, name, type_hint, allow_null, default_value) ZEND_ARG_TYPE_INFO(pass_by_ref, name, type_hint, allow_null)
+#endif
+
 BEGIN_EXTERN_C()
 #include "tdengine_arginfo.h"
 END_EXTERN_C()
