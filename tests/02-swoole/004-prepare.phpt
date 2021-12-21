@@ -44,10 +44,27 @@ Co\run(function(){
     Assert::eq($resource->affectedRows(), 1);
     Assert::eq($resource->getSql(), $sql);
     
-    $sql = 'select * from test_query order by ts desc limit 1';
+    $time2 = (int) (microtime(true) * 1000);
+    $sql = 'insert into test_query values(?,?,?)';
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParams([
+        ['type' => TDengine\TSDB_DATA_TYPE_TIMESTAMP, 'value' => $time2],
+        ['type' => TDengine\TSDB_DATA_TYPE_INT, 'value' => 36],
+        ['type' => TDengine\TSDB_DATA_TYPE_FLOAT, 'value' => 44.0],
+    ]);
+    $resource = $stmt->execute();
+    Assert::eq($resource->affectedRows(), 1);
+    Assert::eq($resource->getSql(), $sql);
+    
+    $sql = 'select * from test_query order by ts desc limit 2';
     $resource = $connection->query($sql);
     Assert::eq($resource->getSql(), $sql);
     Assert::eq($resource->fetch(), [
+        [
+            'ts'          => $time2,
+            'temperature' => 36,
+            'humidity'    => 44.0,
+        ],
         [
             'ts'          => $time1,
             'temperature' => 36,
@@ -58,7 +75,7 @@ Co\run(function(){
     $resource = $connection->query($sql);
     Assert::eq($resource->getSql(), $sql);
     Assert::eq($resource->fetchRow(), [
-        'ts'          => $time1,
+        'ts'          => $time2,
         'temperature' => 36,
         'humidity'    => 44.0,
     ]);
