@@ -5,6 +5,7 @@
 zend_class_entry *TDengine_Connection_ce;
 zend_object_handlers tdengine_connection_handlers;
 zend_class_entry *TDengine_Exception_ce;
+bool taos_inited = false;
 
 PHP_METHOD(TDengine_Connection, __construct) {
     TDengineConnection *connection = this_object(ConnectionObject);

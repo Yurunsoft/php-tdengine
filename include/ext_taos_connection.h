@@ -75,7 +75,17 @@ const zend_function_entry class_TDengine_Connection_methods[] = {
 extern zend_class_entry *TDengine_Connection_ce;
 extern zend_object_handlers tdengine_connection_handlers;
 
+extern bool taos_inited;
+
 inline zend_object *php_tdengine_connection_create_object(zend_class_entry *ce) {
+	if (!taos_inited)
+	{
+		std::thread([]() {
+			swoole_signal_block_all();
+			taos_init();
+		}).join();
+		taos_inited = true;
+	}
     ConnectionObject *obj = (ConnectionObject *) zend_object_alloc(sizeof(ConnectionObject), ce);
 	TDengineConnection *connection = (TDengineConnection*) emalloc(sizeof(TDengineConnection));
 	connection->host = nullptr;

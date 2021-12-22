@@ -29,7 +29,6 @@ PHP_MINIT_FUNCTION(tdengine)
 	register_class_TDengine_Resource();
 	register_class_TDengine_Statement();
 	register_class_TDengine_Exception(zend_ce_exception);
-	taos_init();
 	return SUCCESS;
 }
 /* }}} */
@@ -37,7 +36,11 @@ PHP_MINIT_FUNCTION(tdengine)
 /* {{{ PHP_MSHUTDOWN_FUNCTION */
 PHP_MSHUTDOWN_FUNCTION(tdengine)
 {
-	taos_cleanup();
+	if (taos_inited)
+	{
+		taos_cleanup();
+		taos_inited = false;
+	}
 	return SUCCESS;
 }
 /* }}} */
@@ -69,7 +72,7 @@ zend_module_entry tdengine_module_entry = {
 	PHP_MINIT(tdengine),			/* PHP_MINIT - Module initialization */
 	PHP_MSHUTDOWN(tdengine),		/* PHP_MSHUTDOWN - Module shutdown */
 	PHP_RINIT(tdengine),			/* PHP_RINIT - Request initialization */
-	nullptr,							/* PHP_RSHUTDOWN - Request shutdown */
+	nullptr,						/* PHP_RSHUTDOWN - Request shutdown */
 	PHP_MINFO(tdengine),			/* PHP_MINFO - Module info */
 	PHP_TDENGINE_VERSION,		/* Version */
 	STANDARD_MODULE_PROPERTIES
