@@ -6,13 +6,13 @@
 // TDengine functions
 PHP_FUNCTION(setOptions);
 PHP_FUNCTION(getClientInfo);
-static const zend_function_entry ext_functions[] = {
+const zend_function_entry ext_functions[] = {
 	ZEND_NS_FE("TDengine", setOptions, arginfo_TDengine_setOptions)
 	ZEND_NS_FE("TDengine", getClientInfo, arginfo_TDengine_getClientInfo)
 	ZEND_FE_END
 };
 
-static void register_constants(int module_number)
+inline void register_constants(int module_number)
 {
     // option
     REGISTER_NS_LONG_CONSTANT("TDengine", "TSDB_OPTION_LOCALE", TSDB_OPTION_LOCALE, CONST_CS | CONST_PERSISTENT);

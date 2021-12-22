@@ -56,7 +56,7 @@ typedef struct {
     zend_object std;
 } ConnectionObject;
 
-static const zend_function_entry class_TDengine_Connection_methods[] = {
+const zend_function_entry class_TDengine_Connection_methods[] = {
 	ZEND_ME(TDengine_Connection, __construct, arginfo_class_TDengine_Connection___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Connection, connect, arginfo_class_TDengine_Connection_connect, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Connection, close, arginfo_class_TDengine_Connection_close, ZEND_ACC_PUBLIC)
@@ -75,7 +75,7 @@ static const zend_function_entry class_TDengine_Connection_methods[] = {
 extern zend_class_entry *TDengine_Connection_ce;
 extern zend_object_handlers tdengine_connection_handlers;
 
-static inline zend_object *php_tdengine_connection_create_object(zend_class_entry *ce) {
+inline zend_object *php_tdengine_connection_create_object(zend_class_entry *ce) {
     ConnectionObject *obj = (ConnectionObject *) zend_object_alloc(sizeof(ConnectionObject), ce);
 	TDengineConnection *connection = (TDengineConnection*) emalloc(sizeof(TDengineConnection));
 	connection->host = nullptr;
@@ -92,7 +92,7 @@ static inline zend_object *php_tdengine_connection_create_object(zend_class_entr
 	return zobj;
 }
 
-static inline void php_tdengine_connection_free_object(zend_object *zobj) {
+inline void php_tdengine_connection_free_object(zend_object *zobj) {
 	ConnectionObject *obj = zend_object_to_object(zobj, ConnectionObject);
 
 	if (obj && obj->ptr)
@@ -107,7 +107,7 @@ static inline void php_tdengine_connection_free_object(zend_object *zobj) {
 	zend_object_std_dtor(zobj);
 }
 
-inline static zend_class_entry *register_class_TDengine_Connection(void)
+inline zend_class_entry *register_class_TDengine_Connection(void)
 {
 	zend_class_entry ce;
 
@@ -124,11 +124,11 @@ inline static zend_class_entry *register_class_TDengine_Connection(void)
 // TDengine\Exception\TDengineException
 extern zend_class_entry *TDengine_Exception_ce;
 
-static const zend_function_entry class_TDengine_Exception_methods[] = {
+const zend_function_entry class_TDengine_Exception_methods[] = {
 	ZEND_FE_END
 };
 
-static zend_class_entry *register_class_TDengine_Exception(zend_class_entry *class_entry_Exception)
+inline zend_class_entry *register_class_TDengine_Exception(zend_class_entry *class_entry_Exception)
 {
 	zend_class_entry ce;
 

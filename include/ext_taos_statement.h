@@ -39,7 +39,7 @@ ZEND_METHOD(TDengine_Statement, close);
 ZEND_METHOD(TDengine_Statement, bindParams);
 ZEND_METHOD(TDengine_Statement, execute);
 
-static const zend_function_entry class_TDengine_Statement_methods[] = {
+const zend_function_entry class_TDengine_Statement_methods[] = {
 	ZEND_ME(TDengine_Statement, getConnection, arginfo_class_TDengine_Statement_getConnection, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Statement, getSql, arginfo_class_TDengine_Statement_getSql, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Statement, close, arginfo_class_TDengine_Statement_close, ZEND_ACC_PUBLIC)
@@ -51,7 +51,7 @@ static const zend_function_entry class_TDengine_Statement_methods[] = {
 extern zend_class_entry *TDengine_Statement_ce;
 extern zend_object_handlers tdengine_statement_handlers;
 
-static inline zend_object *php_tdengine_statement_create_object(zend_class_entry *ce) {
+inline zend_object *php_tdengine_statement_create_object(zend_class_entry *ce) {
     StatementObject *obj = (StatementObject *) zend_object_alloc(sizeof(StatementObject), ce);
 	obj->ptr = (TDengineStatement*) emalloc(sizeof(TDengineStatement));
 	obj->ptr->stmt = nullptr;
@@ -64,7 +64,7 @@ static inline zend_object *php_tdengine_statement_create_object(zend_class_entry
 	return zobj;
 }
 
-static inline void php_tdengine_statement_free_object(zend_object *zobj) {
+inline void php_tdengine_statement_free_object(zend_object *zobj) {
 	StatementObject *obj = zend_object_to_object(zobj, StatementObject);
 
 	if (obj && obj->ptr)
@@ -85,7 +85,7 @@ static inline void php_tdengine_statement_free_object(zend_object *zobj) {
 	zend_object_std_dtor(zobj);
 }
 
-static inline zend_class_entry *register_class_TDengine_Statement(void)
+inline zend_class_entry *register_class_TDengine_Statement(void)
 {
 	zend_class_entry ce;
 

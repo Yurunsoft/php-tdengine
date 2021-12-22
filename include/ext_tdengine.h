@@ -5,6 +5,7 @@
 # include "config.h"
 #endif
 #include <stdio.h>
+#include <thread>
 #include "php.h"
 #include "Zend/zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"

@@ -51,7 +51,7 @@ ZEND_METHOD(TDengine_Resource, affectedRows);
 ZEND_METHOD(TDengine_Resource, fetchFields);
 ZEND_METHOD(TDengine_Resource, close);
 
-static const zend_function_entry class_TDengine_Resource_methods[] = {
+const zend_function_entry class_TDengine_Resource_methods[] = {
 	ZEND_ME(TDengine_Resource, getConnection, arginfo_class_TDengine_Resource_getConnection, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Resource, getStatement, arginfo_class_TDengine_Resource_getStatement, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Resource, getSql, arginfo_class_TDengine_Resource_getSql, ZEND_ACC_PUBLIC)
@@ -68,7 +68,7 @@ static const zend_function_entry class_TDengine_Resource_methods[] = {
 extern zend_class_entry *TDengine_Resource_ce;
 extern zend_object_handlers tdengine_resource_handlers;
 
-static inline zend_object *php_tdengine_resource_create_object(zend_class_entry *ce) {
+inline zend_object *php_tdengine_resource_create_object(zend_class_entry *ce) {
     ResourceObject *obj = (ResourceObject *) zend_object_alloc(sizeof(ResourceObject), ce);
 	obj->ptr = (TDengineResource*) emalloc(sizeof(TDengineResource));
 	obj->ptr->res = nullptr;
@@ -82,7 +82,7 @@ static inline zend_object *php_tdengine_resource_create_object(zend_class_entry 
 	return zobj;
 }
 
-static inline void php_tdengine_resource_free_object(zend_object *zobj) {
+inline void php_tdengine_resource_free_object(zend_object *zobj) {
 	ResourceObject *obj = zend_object_to_object(zobj, ResourceObject);
 
 	if (obj && obj->ptr)
@@ -108,7 +108,7 @@ static inline void php_tdengine_resource_free_object(zend_object *zobj) {
 	zend_object_std_dtor(zobj);
 }
 
-static inline zend_class_entry *register_class_TDengine_Resource(void)
+inline zend_class_entry *register_class_TDengine_Resource(void)
 {
 	zend_class_entry ce;
 
