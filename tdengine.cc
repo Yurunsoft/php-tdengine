@@ -60,6 +60,9 @@ PHP_MINFO_FUNCTION(tdengine)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "tdengine support", "enabled");
+#ifdef HAVE_SWOOLE
+    php_info_print_table_row(2, "swoole", "enabled");
+#endif
 	php_info_print_table_end();
 }
 /* }}} */
