@@ -91,10 +91,19 @@ if test "$PHP_TDENGINE" != "no"; then
   dnl PHP_SUBST(TDENGINE_SHARED_LIBADD)
 
   dnl In case of no dependencies
-  AC_DEFINE(HAVE_TDENGINE, 1, [ Have tdengine support ])
+  PHP_ARG_WITH([tdengine_dir],
+    [dir of tdengine],
+    [AS_HELP_STRING([[--with-tdengine-dir[=DIR]]],
+      [Include TDengine support (requires TDengine >= 2.0.0)])], [no], [no])
 
-  TDENGINE_INCLUDE="/usr/local/taos/include"
-  TDENGINE_LIBDIR="/usr/local/taos/driver"
+  AC_DEFINE(HAVE_TDENGINE, 1, [ Have tdengine support ])
+  if test "$PHP_TDENGINE_DIR" != "no"; then
+    TDENGINE_INCLUDE="${PHP_TDENGINE_DIR}/include"
+    TDENGINE_LIBDIR="${PHP_TDENGINE_DIR}/driver"
+  else
+    TDENGINE_INCLUDE="/usr/local/taos/include"
+    TDENGINE_LIBDIR="/usr/local/taos/driver"
+  fi
 
   PHP_CHECK_LIBRARY(taos, taos_init,
   [

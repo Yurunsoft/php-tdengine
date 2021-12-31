@@ -24,6 +24,15 @@ Swoole >= 4.8 (可选)
 phpize && ./configure && make -j && make install
 ```
 
+**手动指定 tdengine 目录：**
+
+```shell
+phpize && ./configure --with-tdengine-dir=/usr/local/Cellar/tdengine/2.4.0.0 && make -j && make install
+```
+
+> `--with-tdengine-dir=` 后跟上 tdengine 目录。
+> 适用于默认找不到的情况，或者 MacOS 系统用户。
+
 **Swoole 环境：**
 
 ```shell
