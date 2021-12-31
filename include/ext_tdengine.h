@@ -6,6 +6,7 @@
 #endif
 #include <stdio.h>
 #include <thread>
+#include <signal.h>
 #include "php.h"
 #include "Zend/zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"

@@ -81,7 +81,9 @@ inline zend_object *php_tdengine_connection_create_object(zend_class_entry *ce) 
 	if (!taos_inited)
 	{
 		std::thread([]() {
-			swoole_signal_block_all();
+			sigset_t mask;
+			sigfillset(&mask);
+			pthread_sigmask(SIG_BLOCK, &mask, nullptr);
 			taos_init();
 		}).join();
 		taos_inited = true;
