@@ -192,6 +192,7 @@ PHP_METHOD(TDengine_Connection, query) {
         error = taos_errno(res);
 #ifdef HAVE_SWOOLE
     }
+#endif
     if (TSDB_CODE_SUCCESS != error)
     {
         if (res)
@@ -200,7 +201,6 @@ PHP_METHOD(TDengine_Connection, query) {
         }
         throw_taos_exception_by_errno(error);
     }
-#endif
 
 	object_init_ex(return_value, TDengine_Resource_ce);
     TDengineResource *resource = zend_object_to_object_ptr(Z_OBJ_P(return_value), ResourceObject);
@@ -234,12 +234,12 @@ PHP_METHOD(TDengine_Connection, prepare) {
         error = taos_stmt_prepare(stmt, sql, sql_len);
 #ifdef HAVE_SWOOLE
     }
+#endif
     if (TSDB_CODE_SUCCESS != error)
     {
         taos_stmt_close(stmt);
         throw_taos_exception_by_errno(error);
     }
-#endif
     object_init_ex(return_value, TDengine_Statement_ce);
     TDengineStatement *statement = zend_object_to_object_ptr(Z_OBJ_P(return_value), StatementObject);
     statement->stmt = stmt;
