@@ -1,6 +1,7 @@
 #ifndef PHP_EXT_TAOS_H
 # define PHP_EXT_TAOS_H
 
+#include "php_tdengine.h"
 #include "ext_tdengine.h"
 
 // TDengine functions
@@ -15,7 +16,7 @@ const zend_function_entry ext_functions[] = {
 inline void register_constants(int module_number)
 {
     // version
-    REGISTER_NS_STRING_CONSTANT("TDengine", "EXTENSION_VERSION", EXTENSION_TDENGINE_VERSION, CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_STRING_CONSTANT("TDengine", "EXTENSION_VERSION", PHP_TDENGINE_VERSION, CONST_CS | CONST_PERSISTENT);
     REGISTER_NS_STRING_CONSTANT("TDengine", "CLIENT_VERSION", taos_get_client_info(), CONST_CS | CONST_PERSISTENT);
 
     // option

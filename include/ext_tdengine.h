@@ -11,8 +11,6 @@
 #include "Zend/zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"
 
-#define EXTENSION_TDENGINE_VERSION "0.0.3"
-
 // PHP < 8.0
 #ifndef RETURN_THROWS
 #define RETURN_THROWS() RETURN_FALSE
