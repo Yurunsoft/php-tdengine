@@ -54,6 +54,9 @@ phpize && ./configure --enable-swoole && make -j && make install
 ```php
 use TDengine\Connection;
 
+// 获取扩展版本号
+var_dump(\TDengine\EXTENSION_VERSION);
+
 // 设置客户端选项
 \TDengine\setOptions([
     \TDengine\TSDB_OPTION_LOCALE => 'en_US.UTF-8', // 区域
@@ -64,6 +67,7 @@ use TDengine\Connection;
 ]);
 
 // 获取客户端版本信息
+var_dump(\TDengine\CLIENT_VERSION);
 var_dump(\TDengine\getClientInfo());
 
 // 以下值都是默认值，不改可以不传
