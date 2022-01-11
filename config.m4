@@ -125,7 +125,7 @@ if test "$PHP_TDENGINE" != "no"; then
     PHP_ADD_EXTENSION_DEP(tdengine, swoole)
   fi
 
-  PHP_NEW_EXTENSION(tdengine, tdengine.cc src/ext_taos.cc src/ext_taos_connection.cc src/ext_taos_resource.cc src/tdengine_swoole.cc src/ext_taos_statement.cc, $ext_shared,,, cxx)
+  PHP_NEW_EXTENSION(tdengine, tdengine.cc src/ext_taos.cc src/ext_taos_connection.cc src/ext_taos_resource.cc src/ext_taos_statement.cc, $ext_shared,,, cxx)
 
   PHP_REQUIRE_CXX()
   
