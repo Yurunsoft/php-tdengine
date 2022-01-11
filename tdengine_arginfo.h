@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 55e709a6c11eb2f00c06f12d5ab2842c842693cd */
+ * Stub hash: c9af4f3c024d748238f03d394376146d2da73473 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_TDengine_setOptions, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
@@ -17,6 +17,9 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_TDengine_Connection___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_TDengine_Connection_connect, 0, 0, IS_VOID, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_TDengine_Connection_isConnected, 0, 0, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_TDengine_Connection_close arginfo_class_TDengine_Connection_connect

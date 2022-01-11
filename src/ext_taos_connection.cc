@@ -247,3 +247,8 @@ PHP_METHOD(TDengine_Connection, prepare) {
     statement->sql = sql;
     GC_ADDREF(Z_OBJ_P(ZEND_THIS));
 }
+
+PHP_METHOD(TDengine_Connection, isConnected) {
+    TDengineConnection *connection = this_object(ConnectionObject);
+    RETURN_BOOL(is_connected(connection));
+}

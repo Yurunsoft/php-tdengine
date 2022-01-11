@@ -50,6 +50,7 @@ ZEND_METHOD(TDengine_Connection, getServerInfo);
 ZEND_METHOD(TDengine_Connection, selectDb);
 ZEND_METHOD(TDengine_Connection, query);
 ZEND_METHOD(TDengine_Connection, prepare);
+ZEND_METHOD(TDengine_Connection, isConnected);
 
 typedef struct {
     TDengineConnection *ptr;
@@ -69,6 +70,7 @@ const zend_function_entry class_TDengine_Connection_methods[] = {
 	ZEND_ME(TDengine_Connection, selectDb, arginfo_class_TDengine_Connection_selectDb, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Connection, query, arginfo_class_TDengine_Connection_query, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Connection, prepare, arginfo_class_TDengine_Connection_prepare, ZEND_ACC_PUBLIC)
+	ZEND_ME(TDengine_Connection, isConnected, arginfo_class_TDengine_Connection_isConnected, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

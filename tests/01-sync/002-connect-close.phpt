@@ -20,6 +20,7 @@ assert(getUser() === $connection->getUser());
 assert(getPass() === $connection->getPass());
 assert(getDb() === $connection->getDb());
 $connection->connect();
+assert(true === $connection->isConnected());
 $connection->close();
 ?>
 --EXPECT--

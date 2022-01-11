@@ -6,7 +6,9 @@ namespace TDengine
     {
         public function __construct(string $host = '127.0.0.1', int $port = 6030, string $user = 'root', string $pass = 'taosdata', ?string $db = null) { }
 
-        public function connect(): void{ }
+        public function connect(): void {}
+
+        public function isConnected(): bool {}
 
         public function close(): void {}
 
