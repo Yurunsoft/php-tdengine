@@ -83,7 +83,7 @@ jobs:
       - name: Build extension
         uses: ./.github/workflows/winext
         with:
-          ext-path: ./
+          ext-path: .
           tools-path: C:\tools\phpdev
           ext-name: tdengine
 
