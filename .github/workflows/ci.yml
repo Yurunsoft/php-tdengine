@@ -67,7 +67,7 @@ jobs:
       - name: Build TDengine
         run: |
           .github\script\download-tdengine.ps1
-          & .github\script\build-tdengine.bat
+          .github\script\build-tdengine.bat
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
