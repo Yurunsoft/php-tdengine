@@ -1,4 +1,4 @@
-ARG_ENABLE('tdengine', 'tdengine support', 'no');
+ARG_ENABLE('tdengine', 'tdengine support', 'yes');
 
 if (PHP_TDENGINE != 'no') {
 	AC_DEFINE('HAVE_TDENGINE', 1, 'tdengine support enabled');
