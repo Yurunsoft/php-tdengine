@@ -1,31 +1,16 @@
 ARG_ENABLE('tdengine', 'tdengine support', 'no');
 
 if (PHP_TDENGINE != 'no') {
-	PHP_ARG_WITH([tdengine_dir],
-		[dir of tdengine],
-		[AS_HELP_STRING([[--with-tdengine-dir[=DIR]]],
-		[Include TDengine support (requires TDengine >= 2.0.0)])], [no], [no]);
+
+	ARG_WITH('swow', 'Include TDengine support (requires TDengine >= 2.0.0)', 'no');
+
 	AC_DEFINE('HAVE_TDENGINE', 1, 'tdengine support enabled');
 
-	if test "$PHP_TDENGINE_DIR" != "no"; then
-		TDENGINE_INCLUDE="${PHP_TDENGINE_DIR}/include";
-		TDENGINE_LIBDIR="${PHP_TDENGINE_DIR}/driver";
-		PHP_ADD_LIBRARY_WITH_PATH(taos, $TDENGINE_LIBDIR, TDENGINE_SHARED_LIBADD);
-		PHP_SUBST(TDENGINE_SHARED_LIBADD);
-  		PHP_ADD_INCLUDE($TDENGINE_INCLUDE);
-	fi
-
-	PHP_CHECK_LIBRARY(taos, taos_init,
-	[
-	], [
-		AC_MSG_ERROR(tdengine module requires libtaos >= 2.0.0);
-	], [
-		-L$TDENGINE_LIBDIR
-	])
+	CHECK_LIB("taos.lib", "tdengine", PHP_TDENGINE);
 
 	EXTENSION('tdengine', 'tdengine.cc src/ext_taos.cc src/ext_taos_connection.cc src/ext_taos_resource.cc src/ext_taos_statement.cc', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
 
-	PHP_REQUIRE_CXX();
-	
-	CXXFLAGS="$CXXFLAGS -Wall -Wno-unused-function -Wno-deprecated -Wno-deprecated-declarations -std=c++11";
+	REQUIRE_CXX();
+
+	CXXFLAGS = CXXFLAGS+" -Wall -Wno-unused-function -Wno-deprecated -Wno-deprecated-declarations -std=c++11";
 }
