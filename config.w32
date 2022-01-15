@@ -2,7 +2,7 @@ ARG_ENABLE('tdengine', 'tdengine support', 'no');
 
 if (PHP_TDENGINE != 'no') {
 
-	ARG_WITH('swow', 'Include TDengine support (requires TDengine >= 2.0.0)', 'no');
+	ARG_WITH('tdengine', 'Include TDengine support (requires TDengine >= 2.0.0)', 'no');
 
 	AC_DEFINE('HAVE_TDENGINE', 1, 'tdengine support enabled');
 
@@ -12,5 +12,5 @@ if (PHP_TDENGINE != 'no') {
 
 	REQUIRE_CXX();
 
-	CXXFLAGS = CXXFLAGS+" -Wall -Wno-unused-function -Wno-deprecated -Wno-deprecated-declarations -std=c++11";
+	CXXFLAGS = CXXFLAGS + " -Wall -Wno-unused-function -Wno-deprecated -Wno-deprecated-declarations -std=c++11";
 }
