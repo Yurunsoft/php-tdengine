@@ -3,15 +3,59 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
-    runs-on: ubuntu-20.04
+  # test-linux:
+  #   name: PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
+  #   runs-on: ubuntu-20.04
+
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       php: [7.4, '8.0', 8.1]
+  #       swoole: ['4.8.4']
+  #       tdengine: ['2.3.6.0']
+
+  #   env:
+  #     TDENGINE_VERSION: ${{ matrix.tdengine }}
+
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - name: Build TDengine
+  #       run: sudo -E bash .github/script/build-tdengine.sh
+
+  #     - name: Get Openssl Dir
+  #       id: opecssl-dir
+  #       run: echo "::set-output name=path::$(brew --prefix openssl@1.1)"
+
+  #     - name: Setup PHP
+  #       uses: shivammathur/setup-php@v2
+  #       with:
+  #         php-version: ${{ matrix.php }}
+  #         tools: pecl
+  #         extensions: >
+  #           :xdebug
+  #           openssl, mbstring, json, sockets,
+  #           swoole-swoole/swoole-src@v${{ matrix.swoole }}
+  #       env:
+  #         SWOOLE_CONFIGURE_OPTS: >
+  #           --enable-openssl
+  #           --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
+
+  #     - name: Build extension
+  #       run: ./make.sh
+
+  #     - name: Test
+  #       run: ./run-tests.sh
+
+  test-windows:
+    name: PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }}
+    runs-on: windows-2019
 
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, '8.0', 8.1]
-        swoole: ['4.8.4']
+        # php: [7.4, '8.0', 8.1]
+        php: [8.1]
         tdengine: ['2.3.6.0']
 
     env:
@@ -20,12 +64,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build TDengine
-        run: sudo -E bash .github/script/build-tdengine.sh
-
-      - name: Get Openssl Dir
-        id: opecssl-dir
-        run: echo "::set-output name=path::$(brew --prefix openssl@1.1)"
+      # - name: Build TDengine
+      #   run: .github/script/build-tdengine.ps1
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -35,14 +75,25 @@ jobs:
           extensions: >
             :xdebug
             openssl, mbstring, json, sockets,
-            swoole-swoole/swoole-src@v${{ matrix.swoole }}
+
+      - name: Download
+        run: Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+      - name: Extract
+        run: Expand-Archive ngrok.zip
+      - name: Auth
+        run: .\ngrok\ngrok.exe authtoken $Env:NGROK_TOKEN
         env:
-          SWOOLE_CONFIGURE_OPTS: >
-            --enable-openssl
-            --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
+          NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
+      - name: Enable TS
+        run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+      - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+      - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+      - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+      - name: Create Tunnel
+        run: .\ngrok\ngrok.exe tcp 3389
 
-      - name: Build extension
-        run: ./make.sh
+      # - name: Build extension
+      #   run: ./make.ps1
 
-      - name: Test
-        run: ./run-tests.sh
+      # - name: Test
+      #   run: ./run-tests.ps1
