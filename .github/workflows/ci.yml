@@ -87,29 +87,29 @@ jobs:
           tools-path: C:\tools\phpdev
           ext-name: tdengine
 
-      - name: Download
-        if: failure()
-        run: Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
-      - name: Extract
-        if: failure()
-        run: Expand-Archive ngrok.zip
-      - name: Auth
-        if: failure()
-        run: .\ngrok\ngrok.exe authtoken $Env:NGROK_TOKEN
-        env:
-          NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
-      - name: Enable TS
-        if: failure()
-        run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
-      - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-        if: failure()
-      - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-        if: failure()
-      - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
-        if: failure()
-      - name: Create Tunnel
-        if: failure()
-        run: .\ngrok\ngrok.exe tcp 3389
+      # - name: Download
+      #   if: failure()
+      #   run: Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+      # - name: Extract
+      #   if: failure()
+      #   run: Expand-Archive ngrok.zip
+      # - name: Auth
+      #   if: failure()
+      #   run: .\ngrok\ngrok.exe authtoken $Env:NGROK_TOKEN
+      #   env:
+      #     NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
+      # - name: Enable TS
+      #   if: failure()
+      #   run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+      # - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+      #   if: failure()
+      # - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+      #   if: failure()
+      # - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+      #   if: failure()
+      # - name: Create Tunnel
+      #   if: failure()
+      #   run: .\ngrok\ngrok.exe tcp 3389
 
       # - name: Test
       #   run: ./run-tests.ps1
