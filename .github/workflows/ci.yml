@@ -64,10 +64,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Download TDengine
+        run: .github\script\download-tdengine.ps1
+
       - name: Build TDengine
-        run: |
-          .github\script\download-tdengine.ps1
-          .github\script\build-tdengine.bat
+        shell: cmd
+        run: .github\script\build-tdengine.bat
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
