@@ -17,7 +17,7 @@ if (PHP_TDENGINE != 'no') {
     ADD_FLAG('CFLAGS_TDENGINE', '/I "' + configure_module_dirname + '"');
     ADD_FLAG('CFLAGS_TDENGINE', '/I "' + configure_module_dirname + '\\include"');
 
-	EXTENSION('tdengine', 'tdengine.cc src/ext_taos.cc src/ext_taos_connection.cc src/ext_taos_resource.cc src/ext_taos_statement.cc', true, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1', 'tdengine.dll');
+	EXTENSION('tdengine', 'tdengine.cc src/ext_taos.cc src/ext_taos_connection.cc src/ext_taos_resource.cc src/ext_taos_statement.cc', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
 
 	// REQUIRE_CXX();
 
