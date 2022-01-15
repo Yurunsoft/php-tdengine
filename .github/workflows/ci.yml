@@ -64,14 +64,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Build TDengine
-      #   run: .github/script/build-tdengine.ps1
+      - name: Build TDengine
+        run: .github/script/build-tdengine.ps1
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: pecl
+          tools: pecl, phpize, php-config
           extensions: >
             :xdebug
             openssl, mbstring, json, sockets,
