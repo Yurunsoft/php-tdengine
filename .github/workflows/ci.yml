@@ -99,10 +99,9 @@ jobs:
       - name: Build extension
         uses: ./.github/workflows/winext
         with:
-          ext-path: ./ext
+          ext-path: ./
           tools-path: C:\tools\phpdev
           ext-name: tdengine
-          deps: taos
 
       # - name: Test
       #   run: ./run-tests.ps1
