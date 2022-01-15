@@ -11,6 +11,8 @@
 #include "Zend/zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"
 
+#define IS_WIN (defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__NT__))
+
 // PHP < 8.0
 #ifndef RETURN_THROWS
 #define RETURN_THROWS() RETURN_FALSE
