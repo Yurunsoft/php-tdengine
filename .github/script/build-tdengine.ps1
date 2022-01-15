@@ -4,16 +4,16 @@ cd D:\
 
 Invoke-Webrequest "https://github.com/taosdata/TDengine/archive/refs/tags/ver-$env:TDENGINE_VERSION.zip" -Outfile "tdengine.zip"
 
-Expand-Archive "tdengine.zip" "C:\tdengine"
+Expand-Archive "tdengine.zip" "D:\tdengine"
 
-cd "C:\tdengine"
+cd "D:\tdengine"
 
 mkdir release
 
 cd release
 
-cmake -DCMAKE_BUILD_TYPE=Release ..
+&"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
 
-cmake --build .
+cmake .. -G "NMake Makefiles"
 
-make install
+nmake
