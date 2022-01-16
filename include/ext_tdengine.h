@@ -7,9 +7,19 @@
 #include <stdio.h>
 #include <thread>
 #include <signal.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "php.h"
 #include "Zend/zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__NT__)
     #define IS_WIN 1
@@ -42,9 +52,9 @@
 
 BEGIN_EXTERN_C()
 #include "tdengine_arginfo.h"
-END_EXTERN_C()
 #include <taos.h>
 #include <taoserror.h>
+END_EXTERN_C()
 #ifdef HAVE_SWOOLE
 #include "tdengine_swoole.h"
 #endif
