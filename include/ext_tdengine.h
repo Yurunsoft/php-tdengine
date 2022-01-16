@@ -20,7 +20,6 @@ extern "C" {
 }
 #endif
 
-
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__NT__)
     #define IS_WIN 1
 #else
@@ -55,7 +54,6 @@ BEGIN_EXTERN_C()
 #include <taos.h>
 #include <taoserror.h>
 END_EXTERN_C()
-ZEND_DLIMPORT const char* tstrerror(int32_t err);
 #ifdef HAVE_SWOOLE
 #include "tdengine_swoole.h"
 #endif

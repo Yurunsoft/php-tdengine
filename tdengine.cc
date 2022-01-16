@@ -4,15 +4,17 @@
 # include "config.h"
 #endif
 
+#ifdef __cplusplus
 #include "php.h"
 #include "ext/standard/info.h"
 #include "Zend/zend_exceptions.h"
+#include <taos.h>
+#endif
 #include "php_tdengine.h"
 #include "ext_taos.h"
 #include "ext_taos_connection.h"
 #include "ext_taos_resource.h"
 #include "ext_taos_statement.h"
-#include <taos.h>
 
 /* For compatibility with older PHP versions */
 #ifndef ZEND_PARSE_PARAMETERS_NONE
