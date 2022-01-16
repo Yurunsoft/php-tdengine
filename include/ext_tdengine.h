@@ -51,9 +51,12 @@ extern "C" {
 
 BEGIN_EXTERN_C()
 #include "tdengine_arginfo.h"
+END_EXTERN_C()
+#if IS_WIN
+#pragma comment(lib, "taos.lib")
+#endif
 #include <taos.h>
 #include <taoserror.h>
-END_EXTERN_C()
 #ifdef HAVE_SWOOLE
 #include "tdengine_swoole.h"
 #endif
