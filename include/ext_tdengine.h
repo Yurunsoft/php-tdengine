@@ -54,16 +54,17 @@ BEGIN_EXTERN_C()
 END_EXTERN_C()
 #include <taos.h>
 #include <taoserror.h>
+#ifdef HAVE_SWOOLE
+#include "tdengine_swoole.h"
+#endif
+using namespace std;
+
 #ifdef NO_TSTRERROR
 inline const char* inner_tstrerror(int32_t err)
 {
     return std::string(err).c_str();
 }
 #endif
-#ifdef HAVE_SWOOLE
-#include "tdengine_swoole.h"
-#endif
-using namespace std;
 
 #define this_object(class) zend_object_to_object_ptr(Z_OBJ_P(ZEND_THIS), class)
 
