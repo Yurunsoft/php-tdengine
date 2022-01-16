@@ -9,13 +9,27 @@
         RETURN_THROWS(); \
     }
 
-#define throw_taos_exception(_connection) \
+#define throw_taos_exception(message, errno) \
+	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", message); \
+	RETURN_THROWS();
+
+#define throw_taos_exception_by_connection(_connection) \
 	zend_throw_exception_ex(TDengine_Exception_ce, taos_errno(_connection->connection), "%s", taos_errstr(_connection->connection)); \
 	RETURN_THROWS();
 
+#define throw_taos_exception_by_stmt(_stmt, errno) \
+	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", taos_errstr(_stmt->stmt)); \
+	RETURN_THROWS();
+
+#ifdef NO_TSTRERROR
+#define throw_taos_exception_by_errno(errno) \
+	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", inner_tstrerror(errno)); \
+	RETURN_THROWS();
+#else
 #define throw_taos_exception_by_errno(errno) \
 	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", tstrerror(errno)); \
 	RETURN_THROWS();
+#endif
 
 typedef struct {
 	char *host;

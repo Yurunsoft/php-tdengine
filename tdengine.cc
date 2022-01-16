@@ -4,15 +4,9 @@
 # include "config.h"
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 #include "php.h"
 #include "ext/standard/info.h"
 #include "Zend/zend_exceptions.h"
-#ifdef __cplusplus
-}
-#endif
 #include <taos.h>
 #include "php_tdengine.h"
 #include "ext_taos.h"

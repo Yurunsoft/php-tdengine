@@ -52,11 +52,14 @@ extern "C" {
 BEGIN_EXTERN_C()
 #include "tdengine_arginfo.h"
 END_EXTERN_C()
-#if IS_WIN
-#pragma comment(lib, "taos.lib")
-#endif
 #include <taos.h>
 #include <taoserror.h>
+#ifdef NO_TSTRERROR
+inline const char* inner_tstrerror(int32_t err)
+{
+    return std::string(err).c_str();
+}
+#endif
 #ifdef HAVE_SWOOLE
 #include "tdengine_swoole.h"
 #endif
