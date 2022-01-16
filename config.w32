@@ -14,6 +14,14 @@ if (PHP_TDENGINE != 'no') {
     if(PHP_TDENGINE.replace(/static/, '') != PHP_TDENGINE){
         shared = null;
     }
-	EXTENSION('tdengine', 'tdengine.cc src/ext_taos.cc src/ext_taos_connection.cc src/ext_taos_resource.cc src/ext_taos_statement.cc', shared, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
+    
+    ADD_SOURCES(configure_module_dirname + '\\src', [
+        'ext_taos.cc',
+        'ext_taos_connection.cc',
+        'ext_taos_resource.cc',
+        'ext_taos_statement.cc',
+    ].join(' '), "tdengine");
+
+	EXTENSION('tdengine', 'tdengine.cc', shared, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
 
 }
