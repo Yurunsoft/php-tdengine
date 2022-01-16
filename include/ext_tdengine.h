@@ -55,6 +55,7 @@ BEGIN_EXTERN_C()
 #include <taos.h>
 #include <taoserror.h>
 END_EXTERN_C()
+ZEND_DLIMPORT const char* tstrerror(int32_t err);
 #ifdef HAVE_SWOOLE
 #include "tdengine_swoole.h"
 #endif
