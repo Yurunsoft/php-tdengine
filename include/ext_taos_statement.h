@@ -48,8 +48,8 @@ const zend_function_entry class_TDengine_Statement_methods[] = {
 	ZEND_FE_END
 };
 
-extern zend_class_entry *TDengine_Statement_ce;
-extern zend_object_handlers tdengine_statement_handlers;
+extern PHP_TDENGINE_API zend_class_entry *TDengine_Statement_ce;
+extern PHP_TDENGINE_API zend_object_handlers tdengine_statement_handlers;
 
 inline zend_object *php_tdengine_statement_create_object(zend_class_entry *ce) {
     StatementObject *obj = (StatementObject *) zend_object_alloc(sizeof(StatementObject), ce);

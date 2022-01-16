@@ -2,8 +2,8 @@
 #include "ext_taos_statement.h"
 #include "ext_taos_resource.h"
 
-zend_class_entry *TDengine_Statement_ce;
-zend_object_handlers tdengine_statement_handlers;
+PHP_TDENGINE_API zend_class_entry *TDengine_Statement_ce;
+PHP_TDENGINE_API zend_object_handlers tdengine_statement_handlers;
 static int is_null = 1;
 
 inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)

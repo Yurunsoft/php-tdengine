@@ -1,6 +1,5 @@
 #ifndef PHP_EXT_TAOS_RESOURCE_H
 # define PHP_EXT_TAOS_RESOURCE_H
-#include "ext_tdengine.h"
 #include "ext_taos_connection.h"
 #include "ext_taos_statement.h"
 
@@ -65,8 +64,8 @@ const zend_function_entry class_TDengine_Resource_methods[] = {
 	ZEND_FE_END
 };
 
-extern zend_class_entry *TDengine_Resource_ce;
-extern zend_object_handlers tdengine_resource_handlers;
+extern PHP_TDENGINE_API zend_class_entry *TDengine_Resource_ce;
+extern PHP_TDENGINE_API zend_object_handlers tdengine_resource_handlers;
 
 inline zend_object *php_tdengine_resource_create_object(zend_class_entry *ce) {
     ResourceObject *obj = (ResourceObject *) zend_object_alloc(sizeof(ResourceObject), ce);

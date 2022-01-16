@@ -1,10 +1,9 @@
-#include "ext_tdengine.h"
 #include "ext_taos_connection.h"
 #include "ext_taos_resource.h"
 
-zend_class_entry *TDengine_Connection_ce;
-zend_object_handlers tdengine_connection_handlers;
-zend_class_entry *TDengine_Exception_ce;
+PHP_TDENGINE_API zend_class_entry *TDengine_Connection_ce;
+PHP_TDENGINE_API zend_object_handlers tdengine_connection_handlers;
+PHP_TDENGINE_API zend_class_entry *TDengine_Exception_ce;
 bool taos_inited = false;
 
 PHP_METHOD(TDengine_Connection, __construct) {

@@ -22,6 +22,11 @@ if (PHP_TDENGINE != 'no') {
         'ext_taos_statement.cc',
     ].join(' '), "tdengine");
 
+    if (shared)
+    {
+        ADD_FLAG("CFLAGS_TDENGINE", '/D PHP_TDENGINE_EXPORTS');
+    }
+
 	EXTENSION('tdengine', 'tdengine.cc', shared, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
 
 }

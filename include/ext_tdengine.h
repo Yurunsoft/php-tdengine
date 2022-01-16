@@ -17,6 +17,20 @@
     #define IS_WIN 0
 #endif
 
+#if IS_WIN
+#	ifdef PHP_TDENGINE_EXPORTS
+#		define PHP_TDENGINE_API __declspec(dllexport)
+#	elif defined(COMPILE_DL_TDENGINE)
+#		define PHP_TDENGINE_API __declspec(dllimport)
+#	else
+#		define PHP_TDENGINE_API /* nothing special */
+#	endif
+#elif defined(__GNUC__) && __GNUC__ >= 4
+#	define PHP_TDENGINE_API __attribute__ ((visibility("default")))
+#else
+#	define PHP_TDENGINE_API
+#endif
+
 // PHP < 8.0
 #ifndef RETURN_THROWS
 #define RETURN_THROWS() RETURN_FALSE
