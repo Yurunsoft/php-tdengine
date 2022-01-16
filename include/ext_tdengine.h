@@ -5,6 +5,7 @@
 # include "config.h"
 #endif
 #include <stdio.h>
+#include <string>
 #include <thread>
 #include <signal.h>
 
