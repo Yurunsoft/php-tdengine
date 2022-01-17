@@ -50,8 +50,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # php: [7.4, '8.0', 8.1]
-        php: [8.1]
+        php: [7.4, '8.0', 8.1]
         tdengine: ['2.4.0.3']
 
     env:
@@ -59,15 +58,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Docker
-        run: |
-          docker info
-          Set-Content -Value "`{`"experimental`":true`}" -Path C:\ProgramData\docker\config\daemon.json
-          restart-service docker
-          docker info
-          cd .github
-          docker-compose up -d
 
       - name: Download TDengine
         run: .github\script\download-tdengine.ps1
@@ -92,8 +82,10 @@ jobs:
           tools-path: C:\tools\phpdev
           ext-name: tdengine
 
-      - name: Test
-        run: ./run-tests.ps1
+      # Windows 上无法运行 TDengine
+      # Docker 也无法运行在 WSL2 下
+      # - name: Test
+      #   run: ./run-tests.ps1
 
   test-macos:
     name: MacOS PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
@@ -112,7 +104,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      # - uses: docker-practice/actions-setup-docker@v1
+      - uses: docker-practice/actions-setup-docker@v1
 
       - name: Build TDengine
         run: .github/script/build-tdengine-macos.sh
