@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   # test-linux:
-  #   name: PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
+  #   name: Linux PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
   #   runs-on: ubuntu-20.04
 
   #   strategy:
@@ -44,7 +44,7 @@ jobs:
   #       run: ./run-tests.sh
 
   test-windows:
-    name: PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }}
+    name: Windows PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }}
     runs-on: windows-2019
 
     strategy:
@@ -75,6 +75,9 @@ jobs:
           extensions: >
             :xdebug
             openssl, mbstring, json, sockets,
+
+      - name: Copy
+        run: Copy-Item "C:\\TDengine\\driver\\taos.dll" "C:\\tools\\php\\ext"
 
       - name: Build extension
         uses: ./.github/workflows/winext
@@ -111,8 +114,8 @@ jobs:
       #   run: .\ngrok\ngrok.exe tcp 3389
 
   test-macos:
-    name: PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
-    runs-on: ubuntu-20.04
+    name: MacOS PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
+    runs-on: macos-latest
 
     strategy:
       fail-fast: false

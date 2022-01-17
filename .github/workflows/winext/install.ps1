@@ -39,8 +39,6 @@ if(-Not (Test-Path $extdir -PathType Container)){
 info "Copy $env:BUILD_DIR\php_$ExtName.dll to $extdir"
 Copy-Item "$env:BUILD_DIR\php_$ExtName.dll" $extdir | Out-Null
 
-ls $extdir
-
 $ext_ini = ""
 if($Enable){
     $ext_ini = "extension=$ExtName"
