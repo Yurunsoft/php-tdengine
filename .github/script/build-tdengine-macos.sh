@@ -5,4 +5,4 @@ mkdir -p tdengine && \
 tar -xf tdengine.tar.gz -C tdengine --strip-components=1 && \
 cd tdengine && \
 mkdir debug && cd debug && cmake .. && make && make install && \
-brew service start taosd
+brew services start taosd

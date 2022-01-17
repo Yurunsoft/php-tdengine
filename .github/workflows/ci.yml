@@ -64,7 +64,8 @@ jobs:
         shell: cmd
         run: |
           docker info
-          "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchLinuxEngine
+          Set-Content -Value "`{`"experimental`":true`}" -Path C:\ProgramData\docker\config\daemon.json
+          restart-service docker
           docker info
           cd .github
           docker-compose up -d
