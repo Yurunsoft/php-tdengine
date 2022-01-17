@@ -63,7 +63,7 @@ jobs:
       - name: Docker
         run: |
           docker info
-          & $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon
+          & 'C:\Program Files\Docker\Docker\DockerCli.exe' -SwitchDaemon
           docker info
           cd .github
           docker-compose up -d
