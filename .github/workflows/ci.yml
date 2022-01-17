@@ -64,7 +64,7 @@ jobs:
         shell: cmd
         run: |
           docker info
-          "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchDaemon
+          "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchLinuxEngine
           docker info
           cd .github
           docker-compose up -d
@@ -115,7 +115,7 @@ jobs:
       # - uses: docker-practice/actions-setup-docker@v1
 
       - name: Build TDengine
-        run: sudo -E bash .github/script/build-tdengine-macos.sh
+        run: .github/script/build-tdengine-macos.sh
 
       - name: Docker
         run: |
