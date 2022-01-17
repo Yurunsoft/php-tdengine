@@ -63,7 +63,7 @@ using namespace std;
 #ifdef NO_TSTRERROR
 inline const char* inner_tstrerror(int32_t err)
 {
-    return std::string(err).c_str();
+    return std::to_string(err).c_str();
 }
 #endif
 
