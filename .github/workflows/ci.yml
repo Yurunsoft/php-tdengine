@@ -63,7 +63,7 @@ jobs:
       - name: Docker
         run: |
           docker info
-          $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon
+          & $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon
           docker info
           cd .github
           docker-compose up -d
@@ -108,8 +108,8 @@ jobs:
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
-      CC: gcc-11
-      CXX: g++-11
+      CC: gcc-9
+      CXX: g++-9
 
     steps:
       - uses: actions/checkout@v2
@@ -117,7 +117,7 @@ jobs:
 
       - name: Env
         run: |
-          brew install gcc@11
+          brew install gcc@9
 
       - name: Build TDengine
         run: |
