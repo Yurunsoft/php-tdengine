@@ -27,7 +27,7 @@ if (PHP_TDENGINE != 'no') {
     ADD_FLAG('CFLAGS_TDENGINE', '/I "' + configure_module_dirname + '\\include"');
 
     var shared = PHP_TDENGINE;
-    if(PHP_TDENGINE.replace(/static/, '') != PHP_TDENGINE){
+    if(PHP_TDENGINE.indexOf('static') >= 0){
         shared = null;
     }
     
@@ -43,6 +43,6 @@ if (PHP_TDENGINE != 'no') {
         ADD_FLAG("CFLAGS_TDENGINE", '/D PHP_TDENGINE_EXPORTS');
     }
 
-	EXTENSION('tdengine', 'tdengine.cc', shared, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
+	EXTENSION('tdengine', 'tdengine.cc', shared, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1', 'php_tdengine.dll');
 
 }
