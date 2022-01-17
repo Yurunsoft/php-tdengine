@@ -54,10 +54,12 @@ jobs:
         php:
           - version: 7.4
             runs-on: windows-2016
+            vs: 2019
         tdengine: ['2.4.0.3']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
+      VS_VERSION: ${{ matrix.php.vs }}
 
     steps:
       - uses: actions/checkout@v2
