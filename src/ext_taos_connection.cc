@@ -220,7 +220,7 @@ PHP_METHOD(TDengine_Connection, query) {
 
 PHP_METHOD(TDengine_Connection, prepare) {
     char *sql;
-    size_t sql_len;
+    unsigned long sql_len;
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &sql, &sql_len) == FAILURE) {
 		RETURN_THROWS();
 	}

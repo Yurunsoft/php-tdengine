@@ -3,45 +3,45 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  # test-linux:
-  #   name: Linux PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
-  #   runs-on: ubuntu-20.04
+  test-linux:
+    name: Linux PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
+    runs-on: ubuntu-20.04
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       php: [7.4, '8.0', 8.1]
-  #       swoole: ['4.8.6']
-  #       tdengine: ['2.4.0.3']
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.4, '8.0', 8.1]
+        swoole: ['4.8.6']
+        tdengine: ['2.4.0.3']
 
-  #   env:
-  #     TDENGINE_VERSION: ${{ matrix.tdengine }}
+    env:
+      TDENGINE_VERSION: ${{ matrix.tdengine }}
 
-  #   steps:
-  #     - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-  #     - name: Build TDengine
-  #       run: sudo -E bash .github/script/build-tdengine.sh
+      - name: Build TDengine
+        run: sudo -E bash .github/script/build-tdengine.sh
 
-  #     - name: Setup PHP
-  #       uses: shivammathur/setup-php@v2
-  #       with:
-  #         php-version: ${{ matrix.php }}
-  #         tools: pecl
-  #         extensions: >
-  #           :xdebug
-  #           openssl, mbstring, json, sockets,
-  #           swoole-swoole/swoole-src@v${{ matrix.swoole }}
-  #       env:
-  #         SWOOLE_CONFIGURE_OPTS: >
-  #           --enable-openssl
-  #           --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: pecl
+          extensions: >
+            :xdebug
+            openssl, mbstring, json, sockets,
+            swoole-swoole/swoole-src@v${{ matrix.swoole }}
+        env:
+          SWOOLE_CONFIGURE_OPTS: >
+            --enable-openssl
+            --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
 
-  #     - name: Build extension
-  #       run: ./make.sh
+      - name: Build extension
+        run: ./make.sh
 
-  #     - name: Test
-  #       run: ./run-tests.sh
+      - name: Test
+        run: ./run-tests.sh
 
   test-windows:
     name: Windows PHP-${{ matrix.php.version }} TDengine-${{ matrix.tdengine }}
@@ -50,11 +50,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # php: [7.4, '8.0', 8.1]
         php:
           - version: 7.4
             runs-on: windows-2016
             vs: 2017
+          - version: '8.0'
+            runs-on: windows-2019
+            vs: 2019
+          - version: 8.1
+            runs-on: windows-2019
+            vs: 2019
         tdengine: ['2.4.0.3']
 
     env:
@@ -99,8 +104,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # php: [7.4, '8.0', 8.1]
-        php: [8.1]
+        php: [7.4, '8.0', 8.1]
         swoole: ['4.8.6']
         tdengine: ['2.4.0.3']
 

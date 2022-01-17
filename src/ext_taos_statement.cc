@@ -22,17 +22,17 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             break;
         case TSDB_DATA_TYPE_TINYINT:
             bind->buffer = (int8_t*) emalloc(sizeof(int8_t));
-            *((int8_t*) bind->buffer) = Z_LVAL_P(value);
+            *((int8_t*) bind->buffer) = (int8_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(int8_t);
             break;
         case TSDB_DATA_TYPE_SMALLINT:
             bind->buffer = (int16_t*) emalloc(sizeof(int16_t));
-            *((int16_t*) bind->buffer) = Z_LVAL_P(value);
+            *((int16_t*) bind->buffer) = (int16_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(int16_t);
             break;
         case TSDB_DATA_TYPE_INT:
             bind->buffer = (int32_t*) emalloc(sizeof(int32_t));
-            *((int32_t*) bind->buffer) = Z_LVAL_P(value);
+            *((int32_t*) bind->buffer) = (int32_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(int32_t);
             break;
         case TSDB_DATA_TYPE_BIGINT:
@@ -42,7 +42,7 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             break;
         case TSDB_DATA_TYPE_FLOAT:
             bind->buffer = (float*) emalloc(sizeof(float));
-            *((float*) bind->buffer) = Z_DVAL_P(value);
+            *((float*) bind->buffer) = (float) Z_DVAL_P(value);
             bind->buffer_length = sizeof(float);
             break;
         case TSDB_DATA_TYPE_DOUBLE:
@@ -63,22 +63,22 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             break;
         case TSDB_DATA_TYPE_UTINYINT:
             bind->buffer = (uint8_t*) emalloc(sizeof(uint8_t));
-            *((uint8_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint8_t*) bind->buffer) = (uint8_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint8_t);
             break;
         case TSDB_DATA_TYPE_USMALLINT:
             bind->buffer = (uint16_t*) emalloc(sizeof(uint16_t));
-            *((uint16_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint16_t*) bind->buffer) = (uint16_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint16_t);
             break;
         case TSDB_DATA_TYPE_UINT:
             bind->buffer = (uint32_t*) emalloc(sizeof(uint32_t));
-            *((uint32_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint32_t*) bind->buffer) = (uint32_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint32_t);
             break;
         case TSDB_DATA_TYPE_UBIGINT:
             bind->buffer = (uint64_t*) emalloc(sizeof(uint64_t));
-            *((uint64_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint64_t*) bind->buffer) = (uint64_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint64_t);
             break;
         default:
@@ -128,7 +128,7 @@ PHP_METHOD(TDengine_Statement, bindParams) {
             || ((type = zend_hash_index_find(Z_ARRVAL_P(row), 0)) && (value = zend_hash_index_find(Z_ARRVAL_P(row), 1)))
         )
         {
-            if (!parse_taos_bind(&binds[index], Z_LVAL_P(type), value))
+            if (!parse_taos_bind(&binds[index], (int) Z_LVAL_P(type), value))
             {
                 success = false;
                 break;
