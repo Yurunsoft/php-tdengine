@@ -62,6 +62,9 @@ jobs:
 
       - name: Docker
         run: |
+          docker info
+          "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchDaemon
+          docker info
           cd .github
           docker-compose up -d
 
@@ -105,18 +108,22 @@ jobs:
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
+      CC: /usr/bin/gcc-11
+      CXX: /usr/bin/g++-11
 
     steps:
       - uses: actions/checkout@v2
       - uses: docker-practice/actions-setup-docker@v1
 
+      - name: Build TDengine
+        run: |
+          echo ~/.bash_profile
+          sudo -E bash .github/script/build-tdengine-macos.sh
+
       - name: Docker
         run: |
           cd .github
           docker-compose up -d
-
-      - name: Build TDengine
-        run: sudo -E bash .github/script/build-tdengine-macos.sh
 
       - name: Get Openssl Dir
         id: opecssl-dir
