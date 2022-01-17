@@ -6,9 +6,9 @@
 
 大数据引擎 [TDengine](https://github.com/taosdata/TDengine) 的 PHP 客户端扩展。
 
-> 暂不支持 Windows
-
 ## 环境要求
+
+Windows、Linux、MacOS
 
 PHP >= 7.4
 
@@ -17,6 +17,8 @@ TDengine >= 2.0
 Swoole >= 4.8 (可选)
 
 ## 编译安装
+
+编译前请先安装 [TDengine-client](https://www.taosdata.com/cn/getting-started/#%E9%80%9A%E8%BF%87%E5%AE%89%E8%A3%85%E5%8C%85%E5%AE%89%E8%A3%85) 或者自行编译 TDengine，详见 TDengine 文档：<https://www.taosdata.com/cn/documentation/connector>
 
 **非 Swoole 环境：**
 
