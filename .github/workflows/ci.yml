@@ -108,9 +108,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: docker-practice/actions-setup-docker@v1
 
       - name: Docker
-        uses: docker-practice/actions-setup-docker@v1
         run: |
           cd .github
           docker-compose up -d
