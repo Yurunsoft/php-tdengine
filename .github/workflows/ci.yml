@@ -44,13 +44,16 @@ jobs:
   #       run: ./run-tests.sh
 
   test-windows:
-    name: Windows PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }}
-    runs-on: windows-2019
+    name: Windows PHP-${{ matrix.php.version }} TDengine-${{ matrix.tdengine }}
+    runs-on: ${{ matrix.php.runs-on }}
 
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, '8.0', 8.1]
+        # php: [7.4, '8.0', 8.1]
+        php:
+          - version: 7.4
+            runs-on: windows-2016
         tdengine: ['2.4.0.3']
 
     env:
@@ -69,7 +72,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: ${{ matrix.php.version }}
           tools: pecl
           extensions: >
             :xdebug
