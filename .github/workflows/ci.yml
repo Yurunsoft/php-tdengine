@@ -76,9 +76,6 @@ jobs:
             :xdebug
             openssl, mbstring, json, sockets,
 
-      - name: Copy
-        run: Copy-Item "C:\\TDengine\\driver\\taos.dll" "C:\\tools\\php\\ext"
-
       - name: Build extension
         uses: ./.github/workflows/winext
         with:
@@ -132,7 +129,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build TDengine
-        run: sudo -E bash .github/script/build-tdengine.sh
+        run: sudo -E bash .github/script/build-tdengine-macos.sh
 
       - name: Get Openssl Dir
         id: opecssl-dir
