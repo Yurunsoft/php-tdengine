@@ -54,7 +54,7 @@ jobs:
         php:
           - version: 7.4
             runs-on: windows-2016
-            vs: 2019
+            vs: 2017
         tdengine: ['2.4.0.3']
 
     env:

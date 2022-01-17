@@ -5,5 +5,4 @@ mkdir -p tdengine && \
 tar -xf tdengine.tar.gz -C tdengine --strip-components=1 && \
 cd tdengine && \
 mkdir debug && cd debug && cmake .. && make && make install && \
-mkdir -p /etc/taos/ && \
-echo "rpcForceTcp 1" >> /etc/taos/taos.cfg
+echo "rpcForceTcp 1" >> /usr/local/etc/taos/taos.cfg
