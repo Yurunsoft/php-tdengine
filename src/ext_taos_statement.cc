@@ -2,8 +2,8 @@
 #include "ext_taos_statement.h"
 #include "ext_taos_resource.h"
 
-zend_class_entry *TDengine_Statement_ce;
-zend_object_handlers tdengine_statement_handlers;
+PHP_TDENGINE_API zend_class_entry *TDengine_Statement_ce;
+PHP_TDENGINE_API zend_object_handlers tdengine_statement_handlers;
 static int is_null = 1;
 
 inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
@@ -22,17 +22,17 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             break;
         case TSDB_DATA_TYPE_TINYINT:
             bind->buffer = (int8_t*) emalloc(sizeof(int8_t));
-            *((int8_t*) bind->buffer) = Z_LVAL_P(value);
+            *((int8_t*) bind->buffer) = (int8_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(int8_t);
             break;
         case TSDB_DATA_TYPE_SMALLINT:
             bind->buffer = (int16_t*) emalloc(sizeof(int16_t));
-            *((int16_t*) bind->buffer) = Z_LVAL_P(value);
+            *((int16_t*) bind->buffer) = (int16_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(int16_t);
             break;
         case TSDB_DATA_TYPE_INT:
             bind->buffer = (int32_t*) emalloc(sizeof(int32_t));
-            *((int32_t*) bind->buffer) = Z_LVAL_P(value);
+            *((int32_t*) bind->buffer) = (int32_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(int32_t);
             break;
         case TSDB_DATA_TYPE_BIGINT:
@@ -42,7 +42,7 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             break;
         case TSDB_DATA_TYPE_FLOAT:
             bind->buffer = (float*) emalloc(sizeof(float));
-            *((float*) bind->buffer) = Z_DVAL_P(value);
+            *((float*) bind->buffer) = (float) Z_DVAL_P(value);
             bind->buffer_length = sizeof(float);
             break;
         case TSDB_DATA_TYPE_DOUBLE:
@@ -63,22 +63,22 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             break;
         case TSDB_DATA_TYPE_UTINYINT:
             bind->buffer = (uint8_t*) emalloc(sizeof(uint8_t));
-            *((uint8_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint8_t*) bind->buffer) = (uint8_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint8_t);
             break;
         case TSDB_DATA_TYPE_USMALLINT:
             bind->buffer = (uint16_t*) emalloc(sizeof(uint16_t));
-            *((uint16_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint16_t*) bind->buffer) = (uint16_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint16_t);
             break;
         case TSDB_DATA_TYPE_UINT:
             bind->buffer = (uint32_t*) emalloc(sizeof(uint32_t));
-            *((uint32_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint32_t*) bind->buffer) = (uint32_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint32_t);
             break;
         case TSDB_DATA_TYPE_UBIGINT:
             bind->buffer = (uint64_t*) emalloc(sizeof(uint64_t));
-            *((uint64_t*) bind->buffer) = Z_LVAL_P(value);
+            *((uint64_t*) bind->buffer) = (uint64_t) Z_LVAL_P(value);
             bind->buffer_length = sizeof(uint64_t);
             break;
         default:
@@ -128,7 +128,7 @@ PHP_METHOD(TDengine_Statement, bindParams) {
             || ((type = zend_hash_index_find(Z_ARRVAL_P(row), 0)) && (value = zend_hash_index_find(Z_ARRVAL_P(row), 1)))
         )
         {
-            if (!parse_taos_bind(&binds[index], Z_LVAL_P(type), value))
+            if (!parse_taos_bind(&binds[index], (int) Z_LVAL_P(type), value))
             {
                 success = false;
                 break;
@@ -148,7 +148,7 @@ PHP_METHOD(TDengine_Statement, bindParams) {
         efree(binds);
         if (TSDB_CODE_SUCCESS != error)
         {
-            throw_taos_exception_by_errno(error);
+            throw_taos_exception_by_stmt(statement, error);
         }
         int is_insert;
         error = taos_stmt_is_insert(statement->stmt, &is_insert);
@@ -159,13 +159,13 @@ PHP_METHOD(TDengine_Statement, bindParams) {
                 error = taos_stmt_add_batch(statement->stmt);
                 if (TSDB_CODE_SUCCESS != error)
                 {
-                    throw_taos_exception_by_errno(error);
+                    throw_taos_exception_by_stmt(statement, error);
                 }
             }
         }
         else
         {
-            throw_taos_exception_by_errno(error);
+            throw_taos_exception_by_stmt(statement, error);
         }
     }
     else
@@ -196,13 +196,13 @@ PHP_METHOD(TDengine_Statement, execute) {
 
     if (TSDB_CODE_SUCCESS != error)
     {
-        throw_taos_exception_by_errno(error);
+        throw_taos_exception_by_stmt(statement, error);
     }
 
     TAOS_RES *res = taos_stmt_use_result(statement->stmt);
     if (NULL == res)
     {
-        throw_taos_exception(statement->connection->ptr);
+        throw_taos_exception_by_connection(statement->connection->ptr);
     }
 
 	object_init_ex(return_value, TDengine_Resource_ce);

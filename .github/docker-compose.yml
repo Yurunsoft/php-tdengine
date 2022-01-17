@@ -1,0 +1,12 @@
+version: "3"
+services:
+  tdengine:
+      restart: always
+      image: tdengine/tdengine:$TDENGINE_VERSION
+      hostname: tdengine
+      container_name: tdengine
+      privileged: true
+      ports:
+        - 6020:6020
+        - 6030-6042:6030-6042/tcp
+        - 6030-6042:6030-6042/udp

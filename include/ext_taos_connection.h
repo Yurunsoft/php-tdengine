@@ -9,13 +9,27 @@
         RETURN_THROWS(); \
     }
 
-#define throw_taos_exception(_connection) \
+#define throw_taos_exception(message, errno) \
+	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", message); \
+	RETURN_THROWS();
+
+#define throw_taos_exception_by_connection(_connection) \
 	zend_throw_exception_ex(TDengine_Exception_ce, taos_errno(_connection->connection), "%s", taos_errstr(_connection->connection)); \
 	RETURN_THROWS();
 
+#define throw_taos_exception_by_stmt(_stmt, errno) \
+	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", taos_errstr(_stmt->stmt)); \
+	RETURN_THROWS();
+
+#ifdef NO_TSTRERROR
+#define throw_taos_exception_by_errno(errno) \
+	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", inner_tstrerror(errno)); \
+	RETURN_THROWS();
+#else
 #define throw_taos_exception_by_errno(errno) \
 	zend_throw_exception_ex(TDengine_Exception_ce, errno, "%s", tstrerror(errno)); \
 	RETURN_THROWS();
+#endif
 
 typedef struct {
 	char *host;
@@ -74,18 +88,20 @@ const zend_function_entry class_TDengine_Connection_methods[] = {
 	ZEND_FE_END
 };
 
-extern zend_class_entry *TDengine_Connection_ce;
-extern zend_object_handlers tdengine_connection_handlers;
+extern PHP_TDENGINE_API zend_class_entry *TDengine_Connection_ce;
+extern PHP_TDENGINE_API zend_object_handlers tdengine_connection_handlers;
 
-extern bool taos_inited;
+extern PHP_TDENGINE_API bool taos_inited;
 
 inline zend_object *php_tdengine_connection_create_object(zend_class_entry *ce) {
 	if (!taos_inited)
 	{
 		std::thread([]() {
+#if !IS_WIN
 			sigset_t mask;
 			sigfillset(&mask);
 			pthread_sigmask(SIG_BLOCK, &mask, nullptr);
+#endif
 			taos_init();
 		}).join();
 		taos_inited = true;
@@ -136,7 +152,7 @@ inline zend_class_entry *register_class_TDengine_Connection(void)
 }
 
 // TDengine\Exception\TDengineException
-extern zend_class_entry *TDengine_Exception_ce;
+extern PHP_TDENGINE_API zend_class_entry *TDengine_Exception_ce;
 
 const zend_function_entry class_TDengine_Exception_methods[] = {
 	ZEND_FE_END

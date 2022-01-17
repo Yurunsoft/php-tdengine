@@ -1,8 +1,8 @@
 #include "ext_tdengine.h"
 #include "ext_taos_resource.h"
 
-zend_class_entry *TDengine_Resource_ce;
-zend_object_handlers tdengine_resource_handlers;
+PHP_TDENGINE_API zend_class_entry *TDengine_Resource_ce;
+PHP_TDENGINE_API zend_object_handlers tdengine_resource_handlers;
 
 bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count)
 {

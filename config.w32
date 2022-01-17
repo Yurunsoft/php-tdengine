@@ -1,7 +1,47 @@
-ARG_ENABLE('tdengine', 'tdengine support', 'no');
+ARG_ENABLE('tdengine', 'tdengine support', 'yes');
+
+function checkTaosTstrerror()
+{
+    var FSO = WScript.CreateObject("Scripting.FileSystemObject");
+    if (header = FSO.OpenTextFile(PHP_TDENGINE_DIR + '\\include\\taoserror.h', 1)) {
+        contents = header.ReadAll();
+        header.Close();
+        return contents.indexOf('DLL_EXPORT const char* tstrerror') >= 0;
+    }
+    return false;
+}
 
 if (PHP_TDENGINE != 'no') {
 	AC_DEFINE('HAVE_TDENGINE', 1, 'tdengine support enabled');
 
-	EXTENSION('tdengine', 'tdengine.c', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
+	ARG_WITH('tdengine_dir', 'Include TDengine support (requires TDengine >= 2.0.0)', 'C:\\TDengine');
+	CHECK_LIB('taos.lib', 'tdengine', PHP_TDENGINE_DIR + '\\driver');
+	CHECK_HEADER_ADD_INCLUDE('taos.h', 'CFLAGS_TDENGINE', PHP_TDENGINE_DIR + '\\include');
+
+    if (!checkTaosTstrerror())
+    {
+        AC_DEFINE('NO_TSTRERROR', 1, "Detected compiler version");
+    }
+
+    ADD_FLAG('CFLAGS_TDENGINE', '/I "' + configure_module_dirname + '"');
+    ADD_FLAG('CFLAGS_TDENGINE', '/I "' + configure_module_dirname + '\\include"');
+
+    var shared = PHP_TDENGINE;
+    if(PHP_TDENGINE.indexOf('static') >= 0){
+        shared = null;
+    }
+
+    ADD_SOURCES(configure_module_dirname + '\\src', [
+        'ext_taos.cc',
+        'ext_taos_connection.cc',
+        'ext_taos_resource.cc',
+        'ext_taos_statement.cc',
+    ].join(' '), "tdengine");
+
+    if (shared)
+    {
+        ADD_FLAG("CFLAGS_TDENGINE", '/D PHP_TDENGINE_EXPORTS');
+    }
+
+	EXTENSION('tdengine', 'tdengine.cc', shared, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1', 'php_tdengine.dll');
 }

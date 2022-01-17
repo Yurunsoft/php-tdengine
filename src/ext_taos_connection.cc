@@ -1,10 +1,9 @@
-#include "ext_tdengine.h"
 #include "ext_taos_connection.h"
 #include "ext_taos_resource.h"
 
-zend_class_entry *TDengine_Connection_ce;
-zend_object_handlers tdengine_connection_handlers;
-zend_class_entry *TDengine_Exception_ce;
+PHP_TDENGINE_API zend_class_entry *TDengine_Connection_ce;
+PHP_TDENGINE_API zend_object_handlers tdengine_connection_handlers;
+PHP_TDENGINE_API zend_class_entry *TDengine_Exception_ce;
 bool taos_inited = false;
 
 PHP_METHOD(TDengine_Connection, __construct) {
@@ -52,7 +51,7 @@ PHP_METHOD(TDengine_Connection, connect) {
         connection->connection = taos_connect(connection->host, connection->user, connection->pass, connection->db, connection->port);
         if (nullptr == connection->connection)
         {
-            throw_taos_exception(connection);
+            throw_taos_exception_by_connection(connection);
         }
 #ifdef HAVE_SWOOLE
     }
@@ -129,7 +128,7 @@ PHP_METHOD(TDengine_Connection, getServerInfo) {
         {
             RETURN_STRING(result);
         }
-        throw_taos_exception(connection);
+        throw_taos_exception_by_connection(connection);
 #ifdef HAVE_SWOOLE
     }
 #endif
@@ -183,24 +182,33 @@ PHP_METHOD(TDengine_Connection, query) {
         swoole::coroutine::async([&]() {
             res = taos_query(connection->connection, sql);
             error = taos_errno(res);
+            if (TSDB_CODE_SUCCESS != error && res)
+            {
+                taos_free_result(res);
+            }
         });
+        if (TSDB_CODE_SUCCESS != error)
+        {
+            throw_taos_exception_by_errno(error);
+        }
     }
     else
     {
 #endif
         res = taos_query(connection->connection, sql);
         error = taos_errno(res);
+        if (TSDB_CODE_SUCCESS != error)
+        {
+            auto message = taos_errstr(res);
+            if (res)
+            {
+                taos_free_result(res);
+            }
+            throw_taos_exception(message, error);
+        }
 #ifdef HAVE_SWOOLE
     }
 #endif
-    if (TSDB_CODE_SUCCESS != error)
-    {
-        if (res)
-        {
-            taos_free_result(res);
-        }
-        throw_taos_exception_by_errno(error);
-    }
 
 	object_init_ex(return_value, TDengine_Resource_ce);
     TDengineResource *resource = zend_object_to_object_ptr(Z_OBJ_P(return_value), ResourceObject);
@@ -212,7 +220,7 @@ PHP_METHOD(TDengine_Connection, query) {
 
 PHP_METHOD(TDengine_Connection, prepare) {
     char *sql;
-    size_t sql_len;
+    unsigned long sql_len;
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &sql, &sql_len) == FAILURE) {
 		RETURN_THROWS();
 	}
@@ -226,20 +234,29 @@ PHP_METHOD(TDengine_Connection, prepare) {
     {
         swoole::coroutine::async([&]() {
             error = taos_stmt_prepare(stmt, sql, sql_len);
+            if (TSDB_CODE_SUCCESS != error)
+            {
+                taos_stmt_close(stmt);
+            }
         });
+        if (TSDB_CODE_SUCCESS != error)
+        {
+            throw_taos_exception_by_errno(error);
+        }
     }
     else
     {
 #endif
         error = taos_stmt_prepare(stmt, sql, sql_len);
+        if (TSDB_CODE_SUCCESS != error)
+        {
+            const char* message = taos_stmt_errstr(stmt);
+            taos_stmt_close(stmt);
+            throw_taos_exception(message, error);
+        }
 #ifdef HAVE_SWOOLE
     }
 #endif
-    if (TSDB_CODE_SUCCESS != error)
-    {
-        taos_stmt_close(stmt);
-        throw_taos_exception_by_errno(error);
-    }
     object_init_ex(return_value, TDengine_Statement_ce);
     TDengineStatement *statement = zend_object_to_object_ptr(Z_OBJ_P(return_value), StatementObject);
     statement->stmt = stmt;
