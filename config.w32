@@ -30,7 +30,7 @@ if (PHP_TDENGINE != 'no') {
     if(PHP_TDENGINE.indexOf('static') >= 0){
         shared = null;
     }
-    
+
     ADD_SOURCES(configure_module_dirname + '\\src', [
         'ext_taos.cc',
         'ext_taos_connection.cc',
@@ -44,5 +44,4 @@ if (PHP_TDENGINE != 'no') {
     }
 
 	EXTENSION('tdengine', 'tdengine.cc', shared, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1', 'php_tdengine.dll');
-
 }
