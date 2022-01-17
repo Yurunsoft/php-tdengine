@@ -63,7 +63,7 @@ jobs:
       - name: Docker
         run: |
           docker info
-          "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchDaemon
+          & "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchDaemon
           docker info
           cd .github
           docker-compose up -d
@@ -109,11 +109,11 @@ jobs:
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
       CC: /usr/bin/gcc-11
-      CXX: /usr/bin/g++-11
+      # CXX: /usr/bin/g++-11
 
     steps:
       - uses: actions/checkout@v2
-      - uses: docker-practice/actions-setup-docker@v1
+      # - uses: docker-practice/actions-setup-docker@v1
 
       - name: Build TDengine
         run: |
