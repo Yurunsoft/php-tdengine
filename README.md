@@ -2,7 +2,7 @@
 
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yurunsoft/php-tdengine/ci/master)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
-[![imi License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://github.com/yurunsoft/php-tdengine/blob/master/LICENSE)
+[![imi License](https://img.shields.io/badge/license-AGPLv3-brightgreen.svg)](https://github.com/yurunsoft/php-tdengine/blob/master/LICENSE)
 
 大数据引擎 [TDengine](https://github.com/taosdata/TDengine) 的 PHP 客户端扩展，还支持了 Swoole 协程化。可以运行在传统 PHP 环境和 Swoole 环境下。
 
