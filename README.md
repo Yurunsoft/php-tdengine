@@ -84,7 +84,7 @@ $db = null;
 // 实例化
 $connection = new Connection($host, $port, $user, $pass, $db);
 // 连接
-$connection->connection();
+$connection->connect();
 // 获取连接参数
 $connection->getHost();
 $connection->getPort();
