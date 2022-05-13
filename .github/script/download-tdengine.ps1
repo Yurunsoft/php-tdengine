@@ -2,6 +2,4 @@
 
 cd D:\
 
-Invoke-Webrequest "https://github.com/taosdata/TDengine/archive/refs/tags/ver-$env:TDENGINE_VERSION.zip" -Outfile "tdengine.zip"
-
-Expand-Archive "tdengine.zip" "D:\tdengine\"
+git clone https://github.com/taosdata/TDengine.git -b ver-$env:TDENGINE_VERSION --depth=1

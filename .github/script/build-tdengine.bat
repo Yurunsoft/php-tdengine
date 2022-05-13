@@ -1,7 +1,7 @@
 @ECHO OFF
 
 d:
-cd "D:\tdengine\TDengine-ver-%TDENGINE_VERSION%"
+cd "D:\TDengine"
 
 mkdir release
 

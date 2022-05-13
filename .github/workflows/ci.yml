@@ -113,7 +113,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: docker-practice/actions-setup-docker@v1
+      - uses: docker-practice/actions-setup-docker@v1.0.8
 
       - run: echo "127.0.0.1 tdengine" | sudo tee -a /etc/hosts > /dev/null
 
