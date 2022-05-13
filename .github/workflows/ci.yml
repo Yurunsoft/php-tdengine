@@ -12,7 +12,7 @@ jobs:
       matrix:
         php: [7.4, '8.0', 8.1]
         swoole: ['4.8.6']
-        tdengine: ['2.4.0.18']
+        tdengine: ['2.4.0.3']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
@@ -43,10 +43,6 @@ jobs:
       - name: Test
         run: ./run-tests.sh
 
-      - name: Print logs
-        if: failure()
-        run: cat /tmp/tdengine/release/CMakeFiles/CMakeOutput.log
-
   test-windows:
     name: Windows PHP-${{ matrix.php.version }} TDengine-${{ matrix.tdengine }}
     runs-on: ${{ matrix.php.runs-on }}
@@ -64,7 +60,7 @@ jobs:
           - version: 8.1
             runs-on: windows-2019
             vs: 2019
-        tdengine: ['2.4.0.18']
+        tdengine: ['2.4.0.3']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
@@ -96,9 +92,6 @@ jobs:
           tools-path: C:\tools\phpdev
           ext-name: tdengine
 
-      - name: Print logs
-        if: failure()
-        run: cat "D:\tdengine\TDengine-ver-$env:TDENGINE_VERSION\release\CMakeFiles\CMakeOutput.log"
       # Windows 上无法运行 TDengine
       # Docker 也无法运行在 WSL2 下
       # - name: Test
@@ -113,7 +106,7 @@ jobs:
       matrix:
         php: [7.4, '8.0', 8.1]
         swoole: ['4.8.6']
-        tdengine: ['2.4.0.18']
+        tdengine: ['2.4.0.3']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
