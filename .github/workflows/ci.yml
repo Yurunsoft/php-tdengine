@@ -12,7 +12,7 @@ jobs:
       matrix:
         php: [7.4, '8.0', 8.1]
         swoole: ['4.8.6']
-        tdengine: ['2.4.0.3']
+        tdengine: ['2.4.0.18']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
@@ -60,7 +60,7 @@ jobs:
           - version: 8.1
             runs-on: windows-2019
             vs: 2019
-        tdengine: ['2.4.0.3']
+        tdengine: ['2.4.0.18']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
@@ -97,58 +97,58 @@ jobs:
       # - name: Test
       #   run: ./run-tests.ps1
 
-  test-macos:
-    name: MacOS PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
-    runs-on: macos-10.15
+  # test-macos:
+  #   name: MacOS PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
+  #   runs-on: macos-10.15
 
-    strategy:
-      fail-fast: false
-      matrix:
-        php: [7.4, '8.0', 8.1]
-        swoole: ['4.8.6']
-        tdengine: ['2.4.0.3']
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       php: [7.4, '8.0', 8.1]
+  #       swoole: ['4.8.6']
+  #       tdengine: ['2.4.0.18']
 
-    env:
-      TDENGINE_VERSION: ${{ matrix.tdengine }}
+  #   env:
+  #     TDENGINE_VERSION: ${{ matrix.tdengine }}
 
-    steps:
-      - uses: actions/checkout@v2
-      - uses: docker-practice/actions-setup-docker@v1
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: docker-practice/actions-setup-docker@1.0.8
 
-      - run: echo "127.0.0.1 tdengine" | sudo tee -a /etc/hosts > /dev/null
+  #     - run: echo "127.0.0.1 tdengine" | sudo tee -a /etc/hosts > /dev/null
 
-      - name: Build TDengine
-        run: .github/script/build-tdengine-macos.sh
+  #     - name: Build TDengine
+  #       run: .github/script/build-tdengine-macos.sh
 
-      - name: Docker
-        run: |
-          cd .github
-          docker-compose up -d
+  #     - name: Docker
+  #       run: |
+  #         cd .github
+  #         docker-compose up -d
 
-      - name: Get Openssl Dir
-        id: opecssl-dir
-        run: echo "::set-output name=path::$(brew --prefix openssl@1.1)"
+  #     - name: Get Openssl Dir
+  #       id: opecssl-dir
+  #       run: echo "::set-output name=path::$(brew --prefix openssl@1.1)"
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          tools: pecl
-          extensions: >
-            :xdebug
-            openssl, mbstring, json, sockets,
-            swoole-swoole/swoole-src@v${{ matrix.swoole }}
-        env:
-          SWOOLE_CONFIGURE_OPTS: >
-            --enable-openssl
-            --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
+  #     - name: Setup PHP
+  #       uses: shivammathur/setup-php@v2
+  #       with:
+  #         php-version: ${{ matrix.php }}
+  #         tools: pecl
+  #         extensions: >
+  #           :xdebug
+  #           openssl, mbstring, json, sockets,
+  #           swoole-swoole/swoole-src@v${{ matrix.swoole }}
+  #       env:
+  #         SWOOLE_CONFIGURE_OPTS: >
+  #           --enable-openssl
+  #           --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
 
-      - name: Build extension
-        run: |
-          phpize
-          ./configure --enable-swoole --with-tdengine-dir=/usr/local/Cellar/tdengine/$TDENGINE_VERSION
-          make -j
-          make install
+  #     - name: Build extension
+  #       run: |
+  #         phpize
+  #         ./configure --enable-swoole --with-tdengine-dir=/usr/local/Cellar/tdengine/$TDENGINE_VERSION
+  #         make -j
+  #         make install
 
-      - name: Test
-        run: ./run-tests.sh
+  #     - name: Test
+  #       run: ./run-tests.sh

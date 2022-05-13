@@ -179,7 +179,14 @@ PHP_METHOD(TDengine_Resource, getFieldCount) {
 PHP_METHOD(TDengine_Resource, affectedRows) {
     TDengineResource *resource = this_object(ResourceObject);
     check_res(resource);
-    RETURN_LONG(taos_affected_rows(resource->res));
+    if (resource->statement)
+    {
+        RETURN_LONG(taos_stmt_affected_rows(resource->statement->ptr->stmt));
+    }
+    else
+    {
+        RETURN_LONG(taos_affected_rows(resource->res));
+    }
 }
 
 PHP_METHOD(TDengine_Resource, fetchFields) {
