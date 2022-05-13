@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: c9af4f3c024d748238f03d394376146d2da73473 */
+ * Stub hash: 9e8c61abd73451a7785702c10a4a8ff4759fbb32 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_TDengine_setOptions, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
@@ -84,4 +84,9 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_TDengine_Statement_bindPar
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_TDengine_Statement_execute, 0, 0, TDengine\\Resource, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_TDengine_Statement_setTableNameTags, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, tableName, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, tags, IS_ARRAY, 0, "[]")
 ZEND_END_ARG_INFO()

@@ -214,3 +214,53 @@ PHP_METHOD(TDengine_Statement, execute) {
     GC_ADDREF(&statement->connection->std);
     GC_ADDREF(Z_OBJ_P(ZEND_THIS));
 }
+
+PHP_METHOD(TDengine_Statement, setTableNameTags) {
+    char *table_name;
+    size_t table_name_len;
+	zval *tags;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|a", &table_name, &table_name_len, &tags) == FAILURE) {
+		RETURN_THROWS();
+	}
+    HashTable *tags_ht = Z_ARRVAL_P(tags);
+    TDengineStatement *statement = this_object(StatementObject);
+    check_stmt(statement);
+
+    TAOS_BIND *binds = (TAOS_BIND*) ecalloc(zend_array_count(tags_ht), sizeof(TAOS_BIND));
+    zval *row, *type, *value;
+    size_t index;
+    bool success = true;
+	ZEND_HASH_FOREACH_NUM_KEY_VAL(tags_ht, index, row) {
+        if (
+            ((type = zend_hash_str_find(Z_ARRVAL_P(row), ZEND_STRL("type"))) && (value = zend_hash_str_find(Z_ARRVAL_P(row), ZEND_STRL("value"))))
+            || ((type = zend_hash_index_find(Z_ARRVAL_P(row), 0)) && (value = zend_hash_index_find(Z_ARRVAL_P(row), 1)))
+        )
+        {
+            if (!parse_taos_bind(&binds[index], (int) Z_LVAL_P(type), value))
+            {
+                success = false;
+                break;
+            }
+        }
+        else
+        {
+            success = false;
+            zend_throw_exception(spl_ce_InvalidArgumentException, "Invalid bind params", 0);
+            break;
+        }
+	} ZEND_HASH_FOREACH_END();
+
+    if (success)
+    {
+        int error = taos_stmt_set_tbname_tags(statement->stmt, table_name, binds);
+        efree(binds);
+        if (TSDB_CODE_SUCCESS != error)
+        {
+            throw_taos_exception_by_stmt(statement, error);
+        }
+    }
+    else
+    {
+        efree(binds);
+    }
+}

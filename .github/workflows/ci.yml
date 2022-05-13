@@ -12,7 +12,7 @@ jobs:
       matrix:
         php: [7.4, '8.0', 8.1]
         swoole: ['4.8.6']
-        tdengine: ['2.4.0.3']
+        tdengine: ['2.4.0.18']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
@@ -60,7 +60,7 @@ jobs:
           - version: 8.1
             runs-on: windows-2019
             vs: 2019
-        tdengine: ['2.4.0.3']
+        tdengine: ['2.4.0.18']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
@@ -106,7 +106,7 @@ jobs:
       matrix:
         php: [7.4, '8.0', 8.1]
         swoole: ['4.8.6']
-        tdengine: ['2.4.0.3']
+        tdengine: ['2.4.0.18']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}

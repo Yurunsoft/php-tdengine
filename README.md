@@ -129,6 +129,11 @@ $resource->close();
 ```php
 // 查询
 $stmt = $connection->prepare($sql); // 支持查询和插入，参数用?占位
+// 设置表名和标签
+$stmt->setTableNameTags('表名', [
+    // 支持格式同参数绑定
+    [TDengine\TSDB_DATA_TYPE_INT, 36],
+]);
 // 绑定参数方法1
 $stmt->bindParams(
     // [字段类型, 值]

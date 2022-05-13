@@ -38,6 +38,7 @@ ZEND_METHOD(TDengine_Statement, getSql);
 ZEND_METHOD(TDengine_Statement, close);
 ZEND_METHOD(TDengine_Statement, bindParams);
 ZEND_METHOD(TDengine_Statement, execute);
+ZEND_METHOD(TDengine_Statement, setTableNameTags);
 
 const zend_function_entry class_TDengine_Statement_methods[] = {
 	ZEND_ME(TDengine_Statement, getConnection, arginfo_class_TDengine_Statement_getConnection, ZEND_ACC_PUBLIC)
@@ -45,6 +46,7 @@ const zend_function_entry class_TDengine_Statement_methods[] = {
 	ZEND_ME(TDengine_Statement, close, arginfo_class_TDengine_Statement_close, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Statement, bindParams, arginfo_class_TDengine_Statement_bindParams, ZEND_ACC_PUBLIC)
 	ZEND_ME(TDengine_Statement, execute, arginfo_class_TDengine_Statement_execute, ZEND_ACC_PUBLIC)
+	ZEND_ME(TDengine_Statement, setTableNameTags, arginfo_class_TDengine_Statement_setTableNameTags, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

@@ -65,7 +65,10 @@ namespace TDengine
 
         public function bindParams(array $params): void {}
 
-        public function execute(): Resource;
+        public function execute(): Resource {}
+
+        public function setTableNameTags(string $tableName, array $tags = []): void {}
+
     }
 
     function setOptions(array $options): bool
