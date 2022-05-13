@@ -2,4 +2,4 @@
 
 cd D:\
 
-git clone -b ver-$env:TDENGINE_VERSION --depth=1 https://github.com/taosdata/TDengine.git
+git clone --recurse -b ver-$env:TDENGINE_VERSION --depth=1 https://github.com/taosdata/TDengine.git
