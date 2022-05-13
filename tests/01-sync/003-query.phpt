@@ -7,11 +7,6 @@ tdengine
 declare(strict_types=1);
 
 use Test\Assert;
-use function Test\getDb;
-use function Test\getHost;
-use function Test\getPass;
-use function Test\getPort;
-use function Test\getUser;
 
 include dirname(__DIR__) . '/include/include.php';
 define('DB_NAME', 'php_tdengine_test');
