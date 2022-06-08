@@ -9,13 +9,16 @@ PHP_FUNCTION(setOptions)
 		RETURN_THROWS();
 	}
 	zval *hashData;
-	zend_string *hashKey;
+	zend_string *hashKey, *str;
 
 	ZEND_HASH_FOREACH_STR_KEY_VAL_IND(Z_ARRVAL_P(options), hashKey, hashData) {
-        if (0 != taos_options((TSDB_OPTION)(zend_long)hashKey, Z_STRVAL_P(hashData)))
+		str = zval_get_string(hashData);
+        if (0 != taos_options((TSDB_OPTION)(zend_long)hashKey, ZSTR_VAL(str)))
         {
+			zend_string_release(str);
             RETURN_FALSE;
         }
+		zend_string_release(str);
 	} ZEND_HASH_FOREACH_END();
     RETURN_TRUE;
 }
