@@ -151,7 +151,7 @@ PHP_METHOD(TDengine_Statement, bindParams) {
         efree(binds);
         if (TSDB_CODE_SUCCESS != error)
         {
-            throw_taos_exception_by_stmt(statement, error);
+            throw_taos_exception_by_errno(error);
         }
         int is_insert;
         error = taos_stmt_is_insert(statement->stmt, &is_insert);
@@ -162,13 +162,13 @@ PHP_METHOD(TDengine_Statement, bindParams) {
                 error = taos_stmt_add_batch(statement->stmt);
                 if (TSDB_CODE_SUCCESS != error)
                 {
-                    throw_taos_exception_by_stmt(statement, error);
+                    throw_taos_exception_by_errno(error);
                 }
             }
         }
         else
         {
-            throw_taos_exception_by_stmt(statement, error);
+            throw_taos_exception_by_errno(error);
         }
     }
     else
@@ -199,7 +199,7 @@ PHP_METHOD(TDengine_Statement, execute) {
 
     if (TSDB_CODE_SUCCESS != error)
     {
-        throw_taos_exception_by_stmt(statement, error);
+        throw_taos_exception_by_errno(error);
     }
 
     TAOS_RES *res = taos_stmt_use_result(statement->stmt);
@@ -259,7 +259,7 @@ PHP_METHOD(TDengine_Statement, setTableNameTags) {
         efree(binds);
         if (TSDB_CODE_SUCCESS != error)
         {
-            throw_taos_exception_by_stmt(statement, error);
+            throw_taos_exception_by_errno(error);
         }
     }
     else

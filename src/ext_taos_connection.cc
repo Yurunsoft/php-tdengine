@@ -199,12 +199,11 @@ PHP_METHOD(TDengine_Connection, query) {
         error = taos_errno(res);
         if (TSDB_CODE_SUCCESS != error)
         {
-            auto message = taos_errstr(res);
             if (res)
             {
                 taos_free_result(res);
             }
-            throw_taos_exception(message, error);
+            throw_taos_exception_by_errno(error);
         }
 #ifdef HAVE_SWOOLE
     }
