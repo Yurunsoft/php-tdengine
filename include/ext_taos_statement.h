@@ -13,7 +13,7 @@
 typedef struct {
 	TAOS_STMT *stmt;
     ConnectionObject *connection;
-	char *sql;
+	const char *sql;
 } TDengineStatement;
 
 typedef struct {
@@ -82,6 +82,9 @@ inline void php_tdengine_statement_free_object(zend_object *zobj) {
 			statement->connection = nullptr;
 		}
 		obj->ptr->sql = nullptr;
+
+		efree(statement);
+		obj->ptr = nullptr;
 	}
 
 	zend_object_std_dtor(zobj);

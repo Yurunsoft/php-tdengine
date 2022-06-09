@@ -14,7 +14,7 @@ typedef struct {
 	TAOS_RES *res;
     ConnectionObject *connection;
     StatementObject *statement;
-	char *sql;
+	const char *sql;
 } TDengineResource;
 
 typedef struct {
@@ -101,7 +101,10 @@ inline void php_tdengine_resource_free_object(zend_object *zobj) {
 			GC_DELREF(&resource->statement->std);
 			resource->statement = nullptr;
 		}
-		obj->ptr->sql = nullptr;
+		resource->sql = nullptr;
+
+		efree(resource);
+		obj->ptr = nullptr;
 	}
 
 	zend_object_std_dtor(zobj);

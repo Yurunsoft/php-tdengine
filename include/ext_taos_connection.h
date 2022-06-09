@@ -32,11 +32,11 @@
 #endif
 
 typedef struct {
-	char *host;
+	const char *host;
 	int port;
-	char *user;
-	char *pass;
-	char *db;
+	const char *user;
+	const char *pass;
+	const char *db;
 	TAOS *connection;
 } TDengineConnection;
 
@@ -132,6 +132,9 @@ inline void php_tdengine_connection_free_object(zend_object *zobj) {
 		{
 			connection_close(connection);
 		}
+
+		efree(connection);
+		obj->ptr = nullptr;
 	}
 
 	zend_object_std_dtor(zobj);
