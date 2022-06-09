@@ -6,7 +6,7 @@
 extern zend_module_entry tdengine_module_entry;
 # define phpext_tdengine_ptr &tdengine_module_entry
 
-# define PHP_TDENGINE_VERSION "1.0.2"
+# define PHP_TDENGINE_VERSION "1.0.3"
 
 # if defined(ZTS) && defined(COMPILE_DL_TDENGINE)
 ZEND_TSRMLS_CACHE_EXTERN()
