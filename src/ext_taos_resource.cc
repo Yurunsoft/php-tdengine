@@ -31,6 +31,11 @@ bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int f
 
     for(int i = 0; i < field_count; ++i)
     {
+        if (nullptr == row[i])
+        {
+            add_assoc_null(zrow, fields[i].name);
+            continue;
+        }
         switch(fields[i].type)
         {
             case TSDB_DATA_TYPE_NULL:

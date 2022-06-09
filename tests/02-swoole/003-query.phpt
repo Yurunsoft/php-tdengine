@@ -51,6 +51,24 @@ Co\run(function(){
         'temperature' => 36,
         'humidity'    => 44.0,
     ]);
+
+    // bug: https://github.com/Yurunsoft/php-tdengine/issues/6
+    $sql = <<<'SQL'
+    SELECT 
+      AVG(temperature) as avg_temperature
+    FROM 
+      test_query 
+    WHERE 
+      ts >= NOW - 1d 
+      and ts <= now INTERVAL(10s) FILL(PREV) 
+    limit 
+      1;
+    SQL;
+    $resource = $connection->query($sql);
+    Assert::eq($resource->getSql(), $sql);
+    $row = $resource->fetchRow();
+    Assert::true(array_key_exists('avg_temperature', $row));
+    Assert::null($row['avg_temperature']);
 });
 ?>
 --EXPECT--
