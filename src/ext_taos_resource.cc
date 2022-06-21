@@ -1,6 +1,10 @@
 #include "ext_tdengine.h"
 #include "ext_taos_resource.h"
 
+extern "C" {
+#include "ext/standard/php_math.h"
+}
+
 PHP_TDENGINE_API zend_class_entry *TDengine_Resource_ce;
 PHP_TDENGINE_API zend_object_handlers tdengine_resource_handlers;
 
@@ -57,7 +61,7 @@ bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int f
                 add_assoc_long(zrow, fields[i].name, *((int64_t *)row[i]));
                 break;
             case TSDB_DATA_TYPE_FLOAT:
-                add_assoc_double(zrow, fields[i].name, *((float *)row[i]));
+                add_assoc_double(zrow, fields[i].name, _php_math_round((double) *((float *)row[i]), 7, PHP_ROUND_HALF_DOWN));
                 break;
             case TSDB_DATA_TYPE_DOUBLE:
                 add_assoc_double(zrow, fields[i].name, *((double *)row[i]));
