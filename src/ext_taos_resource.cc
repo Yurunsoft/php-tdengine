@@ -64,6 +64,9 @@ bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int f
                 break;
             case TSDB_DATA_TYPE_BINARY:
             case TSDB_DATA_TYPE_NCHAR:
+#ifdef TSDB_DATA_TYPE_JSON
+            case TSDB_DATA_TYPE_JSON:
+#endif
                 len = ((int16_t *)((char*)row[i] - sizeof(int16_t)))[0];
                 string_value = (char *) emalloc(len);
                 memcpy(string_value, row[i], len);
@@ -73,18 +76,26 @@ bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int f
             case TSDB_DATA_TYPE_TIMESTAMP:
                 add_assoc_long(zrow, fields[i].name, *((int64_t *)row[i]));
                 break;
+#ifdef TSDB_DATA_TYPE_UTINYINT
             case TSDB_DATA_TYPE_UTINYINT:
                 add_assoc_long(zrow, fields[i].name, *((uint8_t *)row[i]));
                 break;
+#endif
+#ifdef TSDB_DATA_TYPE_USMALLINT
             case TSDB_DATA_TYPE_USMALLINT:
                 add_assoc_long(zrow, fields[i].name, *((uint16_t *)row[i]));
                 break;
+#endif
+#ifdef TSDB_DATA_TYPE_UINT
             case TSDB_DATA_TYPE_UINT:
                 add_assoc_long(zrow, fields[i].name, *((uint32_t *)row[i]));
                 break;
+#endif
+#ifdef TSDB_DATA_TYPE_UBIGINT
             case TSDB_DATA_TYPE_UBIGINT:
                 add_assoc_long(zrow, fields[i].name, *((uint64_t *)row[i]));
                 break;
+#endif
             default:
                 zend_throw_exception_ex(TDengine_Exception_ce, 0, "Invalid field type %d", fields[i].type);
                 return false;

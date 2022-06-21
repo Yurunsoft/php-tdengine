@@ -177,3 +177,4 @@ $stmt->close();
 | `TDengine\TSDB_DATA_TYPE_USMALLINT` | usmallint |
 | `TDengine\TSDB_DATA_TYPE_UINT` | uint |
 | `TDengine\TSDB_DATA_TYPE_UBIGINT` | ubigint |
+| `TDengine\TSDB_DATA_TYPE_JSON` | json |

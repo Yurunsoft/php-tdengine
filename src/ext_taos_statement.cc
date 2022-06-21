@@ -53,6 +53,9 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             break;
         case TSDB_DATA_TYPE_BINARY:
         case TSDB_DATA_TYPE_NCHAR:
+#ifdef TSDB_DATA_TYPE_JSON
+        case TSDB_DATA_TYPE_JSON:
+#endif
             str = zval_get_string(value);
             bind->buffer_length = (int16_t) ZSTR_LEN(str);
             bind->buffer = emalloc(bind->buffer_length);
@@ -64,26 +67,34 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             *((int64_t*) bind->buffer) = zval_get_long(value);
             bind->buffer_length = sizeof(int64_t);
             break;
+#ifdef TSDB_DATA_TYPE_UTINYINT
         case TSDB_DATA_TYPE_UTINYINT:
             bind->buffer = (uint8_t*) emalloc(sizeof(uint8_t));
             *((uint8_t*) bind->buffer) = (uint8_t) zval_get_long(value);
             bind->buffer_length = sizeof(uint8_t);
             break;
+#endif
+#ifdef TSDB_DATA_TYPE_USMALLINT
         case TSDB_DATA_TYPE_USMALLINT:
             bind->buffer = (uint16_t*) emalloc(sizeof(uint16_t));
             *((uint16_t*) bind->buffer) = (uint16_t) zval_get_long(value);
             bind->buffer_length = sizeof(uint16_t);
             break;
+#endif
+#ifdef TSDB_DATA_TYPE_UINT
         case TSDB_DATA_TYPE_UINT:
             bind->buffer = (uint32_t*) emalloc(sizeof(uint32_t));
             *((uint32_t*) bind->buffer) = (uint32_t) zval_get_long(value);
             bind->buffer_length = sizeof(uint32_t);
             break;
+#endif
+#ifdef TSDB_DATA_TYPE_UBIGINT
         case TSDB_DATA_TYPE_UBIGINT:
             bind->buffer = (uint64_t*) emalloc(sizeof(uint64_t));
             *((uint64_t*) bind->buffer) = (uint64_t) zval_get_long(value);
             bind->buffer_length = sizeof(uint64_t);
             break;
+#endif
         default:
             zend_throw_exception_ex(TDengine_Exception_ce, 0, "Invalid field type %d", data_type);
             return false;
