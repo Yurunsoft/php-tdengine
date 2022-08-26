@@ -4,7 +4,11 @@
 
 PHP_TDENGINE_API zend_class_entry *TDengine_Statement_ce;
 PHP_TDENGINE_API zend_object_handlers tdengine_statement_handlers;
+#ifdef HAVE_TAOS_BIND
 static int is_null = 1;
+#else
+static char is_null = 1;
+#endif
 
 inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
 {
@@ -100,7 +104,7 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             return false;
     }
     bind->buffer_type = data_type;
-    bind->length = &bind->buffer_length;
+    bind->length = (int32_t*) &bind->buffer_length;
     return true;
 }
 

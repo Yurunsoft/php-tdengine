@@ -99,7 +99,7 @@ PHP_METHOD(TDengine_Connection, getDb) {
 PHP_METHOD(TDengine_Connection, getServerInfo) {
     TDengineConnection *connection = this_object(ConnectionObject);
     check_connected(connection);
-    char *result = nullptr;
+    const char *result = nullptr;
 #ifdef HAVE_SWOOLE
     if (Coroutine::get_current())
     {
