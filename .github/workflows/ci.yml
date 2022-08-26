@@ -49,7 +49,7 @@ jobs:
       - name: Test
         run: ./run-tests.sh
 
-  test-tdengine:
+  test-tdengine-linux:
     name: Linux PHP-${{ matrix.php }} TDengine-${{ matrix.tdengine }} Swoole-${{ matrix.swoole }}
     runs-on: ubuntu-20.04
 
@@ -107,6 +107,54 @@ jobs:
             runs-on: windows-2019
             vs: 2019
         tdengine: ['2.4.0.18']
+
+    env:
+      TDENGINE_VERSION: ${{ matrix.tdengine }}
+      VS_VERSION: ${{ matrix.php.vs }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download TDengine
+        run: .github\script\download-tdengine.ps1
+
+      - name: Build TDengine
+        shell: cmd
+        run: .github\script\build-tdengine.bat
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php.version }}
+          tools: pecl
+          extensions: >
+            :xdebug
+            openssl, mbstring, json, sockets,
+
+      - name: Build extension
+        uses: ./.github/workflows/winext
+        with:
+          ext-path: .
+          tools-path: C:\tools\phpdev
+          ext-name: tdengine
+
+      # Windows 上无法运行 TDengine
+      # Docker 也无法运行在 WSL2 下
+      # - name: Test
+      #   run: ./run-tests.ps1
+
+  test-tdengine-windows:
+    name: Windows PHP-${{ matrix.php.version }} TDengine-${{ matrix.tdengine }}
+    runs-on: ${{ matrix.php.runs-on }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - version: 8.1
+            runs-on: windows-2019
+            vs: 2019
+        tdengine: ['3.0.0.1']
 
     env:
       TDENGINE_VERSION: ${{ matrix.tdengine }}
