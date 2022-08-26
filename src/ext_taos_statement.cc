@@ -107,6 +107,7 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
 #ifdef HAVE_TAOS_BIND
     bind->length = &bind->buffer_length;
 #else
+    bind->num = 1;
     bind->length = (int32_t*) &bind->buffer_length;
 #endif
     return true;
