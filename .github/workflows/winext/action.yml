@@ -148,7 +148,6 @@ runs:
           -ExtPath ${{ inputs.ext-path }} ^
           -ToolsPath ${{ inputs.tools-path }} ^
           -ExtName tdengine ^
-          -Enable ${{ inputs.enable-extension }} ^
           ${{ inputs.conf-args }} || EXIT /b 1
         ECHO ::endgroup::
 
@@ -160,5 +159,6 @@ runs:
       run: |
         IF 1==${{ inputs.install }} ( powershell ${{github.action_path}}\install.ps1 ^
           -ExtPath ${{ inputs.ext-path }} ^
+          -Enable ${{ inputs.enable-extension }} ^
           -ExtName tdengine ) || EXIT /b 1
         ECHO ::endgroup::

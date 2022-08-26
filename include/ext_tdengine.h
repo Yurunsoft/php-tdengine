@@ -59,7 +59,7 @@ END_EXTERN_C()
 #include "tdengine_swoole.h"
 #endif
 
-#ifndef HAVE_TAOS_BIND
+#if !HAVE_TAOS_BIND
 #   define TAOS_BIND TAOS_MULTI_BIND
 #endif
 
