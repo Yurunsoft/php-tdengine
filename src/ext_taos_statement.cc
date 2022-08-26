@@ -4,7 +4,11 @@
 
 PHP_TDENGINE_API zend_class_entry *TDengine_Statement_ce;
 PHP_TDENGINE_API zend_object_handlers tdengine_statement_handlers;
+#if HAVE_TAOS_BIND
 static int is_null = 1;
+#else
+static char is_null = 1;
+#endif
 
 inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
 {
@@ -100,7 +104,12 @@ inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
             return false;
     }
     bind->buffer_type = data_type;
+#if HAVE_TAOS_BIND
     bind->length = &bind->buffer_length;
+#else
+    bind->num = 1;
+    bind->length = (int32_t*) &bind->buffer_length;
+#endif
     return true;
 }
 
@@ -214,10 +223,6 @@ PHP_METHOD(TDengine_Statement, execute) {
     }
 
     TAOS_RES *res = taos_stmt_use_result(statement->stmt);
-    if (NULL == res)
-    {
-        throw_taos_exception_by_connection(statement->connection->ptr);
-    }
 
 	object_init_ex(return_value, TDengine_Resource_ce);
     TDengineResource *resource = zend_object_to_object_ptr(Z_OBJ_P(return_value), ResourceObject);

@@ -10,6 +10,7 @@ PHP_TDENGINE_API zend_object_handlers tdengine_resource_handlers;
 
 bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count)
 {
+    array_init_size(zrow, field_count);
     TAOS_ROW row = nullptr;
 #ifdef HAVE_SWOOLE
     if (Coroutine::get_current())
@@ -31,7 +32,6 @@ bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int f
     }
     int16_t len;
     char *string_value;
-    array_init_size(zrow, field_count);
 
     for(int i = 0; i < field_count; ++i)
     {
@@ -173,50 +173,54 @@ PHP_METHOD(TDengine_Resource, getSql) {
 
 PHP_METHOD(TDengine_Resource, getResultPrecision) {
     TDengineResource *resource = this_object(ResourceObject);
-    check_res(resource);
 
-    RETURN_LONG(taos_result_precision(resource->res));
+    RETURN_LONG(resource->res ? taos_result_precision(resource->res) : 0);
 }
 
 PHP_METHOD(TDengine_Resource, fetch) {
     TDengineResource *resource = this_object(ResourceObject);
-    check_res(resource);
     fetch(return_value, resource);
 }
 
 PHP_METHOD(TDengine_Resource, fetchRow) {
     TDengineResource *resource = this_object(ResourceObject);
-    check_res(resource);
-    fetch_row(return_value, resource, taos_fetch_fields(resource->res), taos_num_fields(resource->res));
+    if (resource->res)
+    {
+        fetch_row(return_value, resource, taos_fetch_fields(resource->res), taos_num_fields(resource->res));
+    }
+    else
+    {
+        array_init_size(return_value, 0);
+    }
 }
 
 PHP_METHOD(TDengine_Resource, getFieldCount) {
     TDengineResource *resource = this_object(ResourceObject);
-    check_res(resource);
-    RETURN_LONG(taos_num_fields(resource->res));
+    RETURN_LONG(resource->res ? taos_num_fields(resource->res) : 0);
 }
 
 PHP_METHOD(TDengine_Resource, affectedRows) {
     TDengineResource *resource = this_object(ResourceObject);
-    check_res(resource);
     if (resource->statement)
     {
         RETURN_LONG(taos_stmt_affected_rows(resource->statement->ptr->stmt));
     }
-    else
-    {
-        RETURN_LONG(taos_affected_rows(resource->res));
-    }
+    RETURN_LONG(resource->res ? taos_affected_rows(resource->res) : 0);
 }
 
 PHP_METHOD(TDengine_Resource, fetchFields) {
     TDengineResource *resource = this_object(ResourceObject);
-    check_res(resource);
-    fetch_fields(return_value, resource);
+    if (resource->res)
+    {
+        fetch_fields(return_value, resource);
+    }
+    else
+    {
+        array_init_size(return_value, 0);
+    }
 }
 
 PHP_METHOD(TDengine_Resource, close) {
     TDengineResource *resource = this_object(ResourceObject);
-    check_res(resource);
     close_resource(resource);
 }

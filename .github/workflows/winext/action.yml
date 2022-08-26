@@ -49,6 +49,10 @@ inputs:
     description: 'fix pickle.h definitions duplicates'
     required: false
     default: "1"
+  enable-extension:
+    description: 'enable extension'
+    required: false
+    default: "1"
 outputs:
   vcver:
     description: 'max retry for downloading things'
@@ -155,5 +159,6 @@ runs:
       run: |
         IF 1==${{ inputs.install }} ( powershell ${{github.action_path}}\install.ps1 ^
           -ExtPath ${{ inputs.ext-path }} ^
+          -Enable ${{ inputs.enable-extension }} ^
           -ExtName tdengine ) || EXIT /b 1
         ECHO ::endgroup::

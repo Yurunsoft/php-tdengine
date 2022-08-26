@@ -58,6 +58,11 @@ END_EXTERN_C()
 #ifdef HAVE_SWOOLE
 #include "tdengine_swoole.h"
 #endif
+
+#if !HAVE_TAOS_BIND
+#   define TAOS_BIND TAOS_MULTI_BIND
+#endif
+
 using namespace std;
 
 #ifdef NO_TSTRERROR
