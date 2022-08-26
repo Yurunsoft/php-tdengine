@@ -23,9 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Prepare
-        run: sudo apt update && sudo apt install -y gcc cmake build-essential git libssl-dev
-
       - name: Build TDengine
         run: sudo -E bash .github/script/build-tdengine.sh
 
@@ -65,9 +62,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Prepare
-        run: sudo apt update && sudo apt install -y gcc cmake build-essential git libssl-dev
 
       - name: Build TDengine
         run: sudo -E bash .github/script/build-tdengine.sh
