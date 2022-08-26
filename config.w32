@@ -17,7 +17,7 @@ if (PHP_TDENGINE != 'no') {
 	ARG_WITH('tdengine_dir', 'Include TDengine support (requires TDengine >= 2.0.0)', 'C:\\TDengine');
 	CHECK_LIB('taos.lib', 'tdengine', PHP_TDENGINE_DIR + '\\driver');
 	CHECK_HEADER_ADD_INCLUDE('taos.h', 'CFLAGS_TDENGINE', PHP_TDENGINE_DIR + '\\include');
-    CHECK_FUNC_IN_HEADER('taos.h', 'TAOS_BIND', PHP_TDENGINE_DIR + '\\include', 'TAOS_BIND')
+    CHECK_FUNC_IN_HEADER('taos.h', 'TAOS_BIND', PHP_TDENGINE_DIR + '\\include')
 
     if (!checkTaosTstrerror())
     {
