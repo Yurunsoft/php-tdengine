@@ -49,6 +49,10 @@ inputs:
     description: 'fix pickle.h definitions duplicates'
     required: false
     default: "1"
+  enable-extension:
+    description: 'enable extension'
+    required: false
+    default: "1"
 outputs:
   vcver:
     description: 'max retry for downloading things'
@@ -144,6 +148,7 @@ runs:
           -ExtPath ${{ inputs.ext-path }} ^
           -ToolsPath ${{ inputs.tools-path }} ^
           -ExtName tdengine ^
+          -Enable ${{ inputs.enable-extension }} ^
           ${{ inputs.conf-args }} || EXIT /b 1
         ECHO ::endgroup::
 

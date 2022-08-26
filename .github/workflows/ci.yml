@@ -137,6 +137,7 @@ jobs:
           ext-path: .
           tools-path: C:\tools\phpdev
           ext-name: tdengine
+          enable-extension: true
       - name: Test
         run: |
           php -m
