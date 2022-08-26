@@ -5,9 +5,9 @@
 PHP_TDENGINE_API zend_class_entry *TDengine_Statement_ce;
 PHP_TDENGINE_API zend_object_handlers tdengine_statement_handlers;
 #if HAVE_TAOS_BIND
-static char is_null = 1;
-#else
 static int is_null = 1;
+#else
+static char is_null = 1;
 #endif
 
 inline bool parse_taos_bind(TAOS_BIND *bind, int data_type, zval *value)
