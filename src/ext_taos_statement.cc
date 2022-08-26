@@ -223,10 +223,6 @@ PHP_METHOD(TDengine_Statement, execute) {
     }
 
     TAOS_RES *res = taos_stmt_use_result(statement->stmt);
-    if (NULL == res)
-    {
-        throw_taos_exception_by_connection(statement->connection->ptr);
-    }
 
 	object_init_ex(return_value, TDengine_Resource_ce);
     TDengineResource *resource = zend_object_to_object_ptr(Z_OBJ_P(return_value), ResourceObject);

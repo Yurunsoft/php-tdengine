@@ -3,13 +3,6 @@
 #include "ext_taos_connection.h"
 #include "ext_taos_statement.h"
 
-#define check_res(res) \
-	if (!assert_res(res)) \
-    { \
-        zend_throw_exception_ex(TDengine_Exception_ce, 0, "Invalid res"); \
-        RETURN_THROWS(); \
-    }
-
 typedef struct {
 	TAOS_RES *res;
     ConnectionObject *connection;
@@ -22,16 +15,14 @@ typedef struct {
     zend_object std;
 } ResourceObject;
 
-inline int assert_res(TDengineResource *resource)
-{
-    return resource->res ? 1 : 0;
-}
-
 inline void close_resource(TDengineResource *resource)
 {
-    taos_stop_query(resource->res);
-    taos_free_result(resource->res);
-    resource->res = nullptr;
+	if (resource->res)
+	{
+		taos_stop_query(resource->res);
+		taos_free_result(resource->res);
+		resource->res = nullptr;
+	}
 }
 
 bool fetch_row(zval *zrow, TDengineResource *resource, TAOS_FIELD *fields, int field_count);
