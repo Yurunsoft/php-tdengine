@@ -2,5 +2,5 @@
 cd /tmp && \
 git clone --recurse -b ver-${TDENGINE_VERSION} --depth=1 https://github.com/taosdata/TDengine.git && \
 cd TDengine && \
-mkdir release && cd release && cmake .. -DBUILD_JDBC=false -DBUILD_TOOLS=false -DCMAKE_BUILD_TYPE=Release && make -j && make install && \
+mkdir debug && cd debug && cmake .. -DBUILD_JDBC=false -DBUILD_TOOLS=false && make -j && make install && \
 systemctl start taosd
