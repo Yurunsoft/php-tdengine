@@ -183,4 +183,3 @@ $stmt->close();
 | `TDengine\TSDB_DATA_TYPE_BLOB` | blob |
 | `TDengine\TSDB_DATA_TYPE_MEDIUMBLOB` | mediumblob |
 | `TDengine\TSDB_DATA_TYPE_BINARY` | binary |
-| `TDengine\TSDB_DATA_TYPE_MAX` | max |
