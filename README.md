@@ -14,7 +14,7 @@ Windows、Linux、MacOS
 
 PHP >= 7.4
 
-TDengine >= 2.0
+TDengine >= 2.0（已支持 TDengine 3.0）
 
 Swoole >= 4.8 (可选)
 
