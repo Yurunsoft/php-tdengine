@@ -17,7 +17,7 @@ inline void register_constants(int module_number)
 {
     // version
     REGISTER_NS_STRING_CONSTANT("TDengine", "EXTENSION_VERSION", PHP_TDENGINE_VERSION, CONST_CS | CONST_PERSISTENT);
-    REGISTER_NS_STRING_CONSTANT("TDengine", "CLIENT_VERSION", taos_get_client_info(), CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_STRING_CONSTANT("TDengine", "CLIENT_VERSION", (char*) taos_get_client_info(), CONST_CS | CONST_PERSISTENT);
 
     // option
     REGISTER_NS_LONG_CONSTANT("TDengine", "TSDB_OPTION_LOCALE", TSDB_OPTION_LOCALE, CONST_CS | CONST_PERSISTENT);
