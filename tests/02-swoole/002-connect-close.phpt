@@ -25,6 +25,7 @@ Co\run(function(){
     assert(getDb() === $connection->getDb());
     $connection->connect();
     assert(true === $connection->isConnected());
+    assert(is_string($connection->getServerInfo()));
     $connection->close();
 });
 ?>
