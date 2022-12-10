@@ -9,7 +9,7 @@ declare(strict_types=1);
 Co\run(function(){
     // 设置客户端选项
     \TDengine\setOptions([
-        \TDengine\TSDB_OPTION_LOCALE => 'en_US.UTF-8', // 区域
+        \TDengine\TSDB_OPTION_LOCALE => 'gg', // 区域
         \TDengine\TSDB_OPTION_CHARSET => 'UTF-8', // 字符集
         \TDengine\TSDB_OPTION_TIMEZONE => 'Asia/Shanghai', // 时区
         \TDengine\TSDB_OPTION_CONFIGDIR => '/etc/taos', // 配置目录
