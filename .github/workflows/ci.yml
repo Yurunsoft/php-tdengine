@@ -138,6 +138,12 @@ jobs:
           tools-path: C:\tools\phpdev
           ext-name: tdengine
           enable-extension: 1
+      - name: Upload DLL
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: php-tdengine-win-${{ matrix.php.version }}
+          path: modules/php_tdengine.dll
       - name: Test
         run: |
           php -m
