@@ -183,3 +183,7 @@ $stmt->close();
 | `TDengine\TSDB_DATA_TYPE_BLOB` | blob |
 | `TDengine\TSDB_DATA_TYPE_MEDIUMBLOB` | mediumblob |
 | `TDengine\TSDB_DATA_TYPE_BINARY` | binary |
+
+## Apache IoTDB REST client
+
+A separate synchronous PHP REST client is provided for IoTDB Tree and Table models; see [IOTDB.md](IOTDB.md) for setup, examples, supported endpoints, and limitations.

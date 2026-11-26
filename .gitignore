@@ -32,6 +32,8 @@ run-tests.php
 tests/**/*.diff
 tests/**/*.out
 tests/**/*.php
+!tests/iotdb-rest-fixture.php
+!tests/iotdb-rest-test.php
 tests/**/*.exp
 tests/**/*.log
 tests/**/*.sh
